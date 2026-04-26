@@ -624,48 +624,6 @@ with st.sidebar:
                                     label_visibility="collapsed")
     st.divider()
 
-    st.caption("STUDY MATERIALS")
-    with st.expander("📄 Manage Books"):
-        u_tab, d_tab = st.tabs(["Upload", "NCERT"])
-
-        with u_tab:
-            uploaded = st.file_uploader("pdf", type="pdf",
-                                        label_visibility="collapsed")
-            if uploaded:
-                os.makedirs("data/custom_pdfs", exist_ok=True)
-                dest = f"data/custom_pdfs/{uploaded.name}"
-                with open(dest, "wb") as fh:
-                    fh.write(uploaded.getbuffer())
-                st.success(f"Saved · {uploaded.name}")
-                if st.button("Index PDF", use_container_width=True):
-                    with st.spinner("Indexing…"):
-                        try:
-                            from rag.loader import PDFLoader
-                            PDFLoader().load_pdf(dest, subject=selected_subject,
-                                                 class_level=selected_class)
-                            st.success("Done!")
-                        except Exception as e:
-                            st.error(str(e))
-
-        with d_tab:
-            st.caption("Official NCERT · Classes 6–10")
-            if st.button("Download Books", use_container_width=True):
-                with st.spinner("Downloading…"):
-                    try:
-                        from download_ncert_books import download_ncert_books
-                        ok, fail = download_ncert_books(verbose=False)
-                        st.success(f"{ok} downloaded!")
-                        if fail:
-                            st.warning(f"{fail} failed")
-                    except Exception as e:
-                        st.error(str(e))
-            try:
-                from download_ncert_books import get_available_books
-                for name, meta in get_available_books().items():
-                    st.caption(f"✓ {name} ({meta['size_mb']} MB)")
-            except Exception:
-                pass
-
     st.divider()
 
     if st.button("▶  Start Session", use_container_width=True, key="start_btn"):
