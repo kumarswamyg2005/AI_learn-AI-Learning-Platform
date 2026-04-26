@@ -25,100 +25,262 @@ st.set_page_config(
     menu_items={"About": "EduCore v1.0 - Next Generation Learning"}
 )
 
-# Custom CSS for professional look
+# Custom CSS for professional look - Modern Design
 st.markdown("""
 <style>
-    /* Brand Colors */
+    /* Root variables */
     :root {
         --primary: #6366f1;
         --secondary: #8b5cf6;
         --accent: #ec4899;
         --dark: #1e293b;
         --light: #f8fafc;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --error: #ef4444;
     }
-    
+
+    /* Global styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     /* Main container */
     .main {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e0e7ff 100%);
+        min-height: 100vh;
     }
-    
-    /* Headers */
-    h1, h2, h3 {
+
+    /* Headers with gradient */
+    h1, h2, h3, h4, h5, h6 {
         color: #1e293b;
         font-weight: 700;
         letter-spacing: -0.5px;
     }
-    
-    /* Sidebar styling */
+
+    h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Sidebar styling - Modern dark theme */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        border-right: 1px solid rgba(99, 102, 241, 0.2);
     }
-    
-    [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
-        color: white !important;
+
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3,
+    [data-testid="stSidebar"] label {
+        color: #f1f5f9 !important;
+        font-weight: 600;
     }
-    
+
+    [data-testid="stSidebar"] p {
+        color: #cbd5e1 !important;
+    }
+
     /* Metric cards */
     [data-testid="stMetricValue"] {
         color: #6366f1;
         font-weight: 700;
-        font-size: 2rem;
+        font-size: 2.2rem;
+        letter-spacing: -1px;
     }
-    
-    /* Buttons */
+
+    [data-testid="stMetricLabel"] {
+        color: #475569 !important;
+        font-weight: 600;
+    }
+
+    /* Buttons - Modern style */
     .stButton > button {
         background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         font-weight: 600;
-        padding: 10px 24px;
+        padding: 12px 28px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        cursor: pointer;
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(99, 102, 241, 0.4);
+        background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+    }
+
+    .stButton > button:active {
+        transform: translateY(-1px);
+    }
+
+    /* Input fields - Modern style */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div > select,
+    .stTextArea > div > div > textarea {
+        border-radius: 10px;
+        border: 2px solid #e2e8f0;
+        padding: 12px 16px;
+        background-color: #ffffff;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+    .stTextInput > div > div > input:focus,
+    .stSelectbox > div > div > select:focus,
+    .stTextArea > div > div > textarea:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), 0 4px 12px rgba(99, 102, 241, 0.2);
+        outline: none;
+    }
+
+    /* File uploader */
+    .stFileUploader {
+        border-radius: 10px;
+        border: 2px dashed #cbd5e1;
+        padding: 20px;
         transition: all 0.3s ease;
     }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-    }
-    
-    /* Input fields */
-    .stTextInput > div > div > input,
-    .stSelectbox > div > div > select {
-        border-radius: 8px;
-        border: 2px solid #e2e8f0;
-        padding: 10px;
-    }
-    
-    .stTextInput > div > div > input:focus,
-    .stSelectbox > div > div > select:focus {
+
+    .stFileUploader:hover {
         border-color: #6366f1;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        background-color: rgba(99, 102, 241, 0.05);
     }
-    
-    /* Success/Error messages */
+
+    /* Success/Error/Warning messages */
     .stSuccess {
-        background-color: #ecfdf5;
-        border: 1px solid #10b981;
-        border-radius: 8px;
+        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        border-left: 4px solid #10b981;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
     }
-    
+
     .stError {
-        background-color: #fef2f2;
-        border: 1px solid #ef4444;
-        border-radius: 8px;
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        border-left: 4px solid #ef4444;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
     }
-    
-    /* Tabs */
+
+    .stWarning {
+        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        border-left: 4px solid #f59e0b;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+    }
+
+    .stInfo {
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        border-left: 4px solid #3b82f6;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+    }
+
+    /* Tabs - Modern style */
     .stTabs [data-baseweb="tab"] {
         padding: 12px 24px;
         font-weight: 600;
-        border-radius: 8px 8px 0 0;
+        border-radius: 10px 10px 0 0;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
     }
-    
+
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: rgba(99, 102, 241, 0.1);
+    }
+
+    .stTabs [aria-selected="true"] {
+        border-bottom-color: #6366f1;
+        color: #6366f1;
+    }
+
     /* Progress bar */
     .stProgress > div > div > div {
-        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Divider */
+    hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+        margin: 2rem 0;
+    }
+
+    /* Containers and cards */
+    .card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        border-color: #cbd5e1;
+    }
+
+    /* Selectbox arrow */
+    .stSelectbox svg {
+        color: #6366f1;
+    }
+
+    /* Radio buttons */
+    .stRadio > label > div {
+        border-radius: 8px;
+        border: 2px solid #e2e8f0;
+        padding: 12px 16px;
+        transition: all 0.3s ease;
+    }
+
+    .stRadio > label > div:hover {
+        border-color: #6366f1;
+        background-color: rgba(99, 102, 241, 0.05);
+    }
+
+    /* Expander */
+    .stExpander {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+    }
+
+    .stExpander > div > button {
+        border-radius: 10px;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
         border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -193,7 +355,102 @@ with st.sidebar:
     )
     
     st.markdown("---")
-    
+
+    # Study Materials Section
+    with st.expander("📚 Study Materials", expanded=False):
+        st.markdown("**Manage your learning resources**")
+
+        material_tab1, material_tab2 = st.tabs(["Upload", "Download"])
+
+        with material_tab1:
+            st.markdown("**Upload Custom PDF**")
+            pdf_file = st.file_uploader(
+                "Upload PDF",
+                type="pdf",
+                help="Upload NCERT or custom textbooks",
+                label_visibility="collapsed"
+            )
+
+            if pdf_file:
+                os.makedirs("data/custom_pdfs", exist_ok=True)
+                pdf_path = os.path.join("data/custom_pdfs", pdf_file.name)
+                with open(pdf_path, "wb") as f:
+                    f.write(pdf_file.getbuffer())
+
+                st.success(f"✅ Uploaded: {pdf_file.name}")
+
+                # Auto-process the PDF
+                if st.button("🔄 Process & Index PDF", use_container_width=True):
+                    with st.spinner("Processing PDF..."):
+                        try:
+                            from rag.loader import PDFLoader
+                            loader = PDFLoader()
+                            loader.load_pdf(pdf_path, subject=selected_subject, class_level=selected_class)
+                            st.success("📚 PDF indexed successfully!")
+                        except Exception as e:
+                            st.error(f"Error processing PDF: {str(e)}")
+
+        with material_tab2:
+            st.markdown("**Download Official NCERT Books**")
+            st.info("📖 Download official NCERT textbooks for Classes 6-10")
+
+            if st.button("⬇️ Download All NCERT Books", use_container_width=True, key="download_ncert"):
+                with st.spinner("🔄 Downloading books from ncert.nic.in..."):
+                    try:
+                        from download_ncert_books import download_ncert_books, get_available_books
+                        successful, failed = download_ncert_books()
+
+                        if successful > 0:
+                            st.success(f"✅ Successfully downloaded {successful} books!")
+
+                        if failed > 0:
+                            st.warning(f"⚠️ Failed to download {failed} books")
+
+                        # Index the books
+                        st.info("🔄 Indexing books into knowledge base...")
+                        try:
+                            from rag.loader import PDFLoader
+                            loader = PDFLoader()
+                            pdf_dir = "data/ncert_pdfs"
+
+                            if os.path.exists(pdf_dir):
+                                for filename in os.listdir(pdf_dir):
+                                    if filename.endswith('.pdf'):
+                                        pdf_path = os.path.join(pdf_dir, filename)
+                                        try:
+                                            # Extract class and subject from filename
+                                            parts = filename.replace('.pdf', '').split('_')
+                                            if len(parts) >= 2:
+                                                class_level = int(parts[0].replace('Class', ''))
+                                                subject = '_'.join(parts[1:]).replace('_', ' ')
+                                                loader.load_pdf(pdf_path, subject=subject, class_level=class_level)
+                                        except Exception as e:
+                                            pass
+
+                            st.success("✨ All books indexed successfully!")
+
+                        except Exception as e:
+                            st.error(f"Error indexing books: {str(e)}")
+
+                    except Exception as e:
+                        st.error(f"Download error: {str(e)}")
+
+            # Show downloaded books
+            st.markdown("**Available Books:**")
+            try:
+                from download_ncert_books import get_available_books
+                books = get_available_books()
+
+                if books:
+                    for book_name, info in books.items():
+                        st.caption(f"✓ {book_name} ({info['size_mb']} MB)")
+                else:
+                    st.caption("No books downloaded yet. Click the button above to get started!")
+            except Exception as e:
+                st.caption("Unable to load books list")
+
+    st.markdown("---")
+
     # Start Learning Button
     if st.button("🚀 Start Learning Session", use_container_width=True, key="start_btn"):
         st.session_state.student_session = StudentSession(
@@ -202,7 +459,7 @@ with st.sidebar:
             class_level=selected_class
         )
         st.success(f"Welcome {student_id}! 🎉")
-    
+
     st.markdown("---")
     
     # Analytics Section
