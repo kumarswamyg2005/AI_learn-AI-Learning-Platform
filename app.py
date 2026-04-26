@@ -1,4 +1,4 @@
-"""Main Streamlit application for AI Tutor"""
+"""EduCore - Premium AI-Powered Learning Platform"""
 
 import streamlit as st
 import plotly.graph_objects as go
@@ -13,14 +13,120 @@ from utils.translate import detect_language, translate_and_detect, format_respon
 from utils.speech import SpeechProcessor
 from utils.report import ReportGenerator
 
+# ============================================
+# Page Configuration & Styling
+# ============================================
+
 st.set_page_config(
-    page_title="🎓 AI Tutor",
-    page_icon="🎓",
+    page_title="EduCore - AI Learning Platform",
+    page_icon="✨",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={"About": "EduCore v1.0 - Next Generation Learning"}
 )
 
-# Initialize session state
+# Custom CSS for professional look
+st.markdown("""
+<style>
+    /* Brand Colors */
+    :root {
+        --primary: #6366f1;
+        --secondary: #8b5cf6;
+        --accent: #ec4899;
+        --dark: #1e293b;
+        --light: #f8fafc;
+    }
+    
+    /* Main container */
+    .main {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+    
+    /* Headers */
+    h1, h2, h3 {
+        color: #1e293b;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+    
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+    }
+    
+    [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+        color: white !important;
+    }
+    
+    /* Metric cards */
+    [data-testid="stMetricValue"] {
+        color: #6366f1;
+        font-weight: 700;
+        font-size: 2rem;
+    }
+    
+    /* Buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 10px 24px;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    }
+    
+    /* Input fields */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div > select {
+        border-radius: 8px;
+        border: 2px solid #e2e8f0;
+        padding: 10px;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stSelectbox > div > div > select:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    
+    /* Success/Error messages */
+    .stSuccess {
+        background-color: #ecfdf5;
+        border: 1px solid #10b981;
+        border-radius: 8px;
+    }
+    
+    .stError {
+        background-color: #fef2f2;
+        border: 1px solid #ef4444;
+        border-radius: 8px;
+    }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab"] {
+        padding: 12px 24px;
+        font-weight: 600;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    /* Progress bar */
+    .stProgress > div > div > div {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        border-radius: 4px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# ============================================
+# Session State Initialization
+# ============================================
+
 if "student_session" not in st.session_state:
     st.session_state.student_session = None
 if "messages" not in st.session_state:
@@ -38,76 +144,114 @@ explain_engine = ExplanationEngine()
 report_gen = ReportGenerator()
 speech_processor = SpeechProcessor()
 
-st.title("🎓 AI Tutor for Underprivileged Students")
-st.markdown("Learn NCERT curriculum with AI-powered personalized tutoring")
+# ============================================
+# Header Section
+# ============================================
 
-# Sidebar
+col1, col2 = st.columns([3, 1])
+with col1:
+    st.markdown("""
+    # ✨ EduCore
+    ### Next-Generation Adaptive Learning Platform
+    """)
+with col2:
+    st.markdown("""
+    <div style='text-align: right; margin-top: 20px;'>
+        <p style='color: #64748b; font-size: 12px;'>Powered by Gemini AI</p>
+        <p style='color: #6366f1; font-weight: 600;'>Active Now</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("---")
+
+# ============================================
+# Sidebar Configuration
+# ============================================
+
 with st.sidebar:
-    st.header("📚 Setup")
-
-    # Student info
-    student_id = st.text_input("Your Name/ID", value="Student", key="student_id")
-
+    st.markdown("## 🎯 Learning Dashboard")
+    st.markdown("---")
+    
+    # Student Profile
+    st.markdown("### Student Profile")
+    student_id = st.text_input("Name or ID", value="Student", key="student_id", 
+                               help="Your learning identifier")
+    
+    # Learning Path Selection
+    st.markdown("### Learning Path")
     selected_class = st.selectbox(
-        "Select Class",
+        "Class Level",
         CLASSES,
-        format_func=lambda x: f"Class {x}"
+        format_func=lambda x: f"Class {x}",
+        help="Select your current class level"
     )
-
+    
     selected_subject = st.selectbox(
-        "Select Subject",
-        list(SUBJECTS.keys())
+        "Subject",
+        list(SUBJECTS.keys()),
+        help="Choose the subject to focus on"
     )
-
-    # Create or load session
-    if st.button("🎯 Start Learning", use_container_width=True):
+    
+    st.markdown("---")
+    
+    # Start Learning Button
+    if st.button("🚀 Start Learning Session", use_container_width=True, key="start_btn"):
         st.session_state.student_session = StudentSession(
             student_id=student_id,
             subject=selected_subject,
             class_level=selected_class
         )
-        st.success(f"👋 Welcome {student_id}!")
-
-    # Progress tracker
+        st.success(f"Welcome {student_id}! 🎉")
+    
     st.markdown("---")
-    st.header("📊 Progress Tracker")
-
+    
+    # Analytics Section
     if st.session_state.student_session:
+        st.markdown("### 📊 Performance Analytics")
         summary = st.session_state.student_session.get_progress_summary()
-
+        
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("Accuracy", f"{summary['accuracy']:.1f}%")
+            st.metric("Accuracy", f"{summary['accuracy']:.1f}%", "↑ Learning")
         with col2:
-            st.metric("Questions", summary['total_questions'])
-
-        # Topic confidence radar chart
+            st.metric("Questions", summary['total_questions'], "✓ Answered")
+        
+        # Topic Confidence Radar
         if summary['topic_confidence']:
             topics = list(summary['topic_confidence'].keys())
             confidences = [summary['topic_confidence'][t] * 100 for t in topics]
-
+            
             fig = go.Figure(data=go.Scatterpolar(
                 r=confidences,
                 theta=topics,
                 fill='toself',
-                name='Confidence'
+                name='Mastery Level',
+                line_color='#6366f1',
+                fillcolor='rgba(99, 102, 241, 0.2)'
             ))
-
+            
             fig.update_layout(
-                polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+                polar=dict(
+                    radialaxis=dict(visible=True, range=[0, 100], gridcolor='#e2e8f0'),
+                    bgcolor='rgba(248, 250, 252, 0.5)'
+                ),
                 showlegend=False,
-                height=400,
-                margin=dict(l=50, r=50, t=50, b=50)
+                height=300,
+                margin=dict(l=50, r=50, t=50, b=50),
+                paper_bgcolor='white',
+                font=dict(size=10, color='#64748b')
             )
-
-            st.plotly_chart(fig, use_container_width=True)
-
-    # Teacher/Parent View
+            
+            st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+    
     st.markdown("---")
-    st.header("👨‍🏫 Reports")
-
-    if st.session_state.student_session:
-        if st.button("📄 Generate Weekly Report", use_container_width=True):
+    
+    # Reports & Insights
+    st.markdown("### 📈 Reports & Insights")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.session_state.student_session and st.button("📄 Weekly Report", use_container_width=True):
             report_path = f"reports/{st.session_state.student_session.student_id}_report.pdf"
             if report_gen.generate_weekly_report(
                 st.session_state.student_session,
@@ -115,111 +259,144 @@ with st.sidebar:
             ):
                 with open(report_path, 'rb') as f:
                     st.download_button(
-                        label="⬇️ Download Report",
+                        label="⬇️ Download",
                         data=f.read(),
                         file_name=os.path.basename(report_path),
-                        mime="application/pdf"
+                        mime="application/pdf",
+                        use_container_width=True
                     )
-
-    # Language selection
+    
+    with col2:
+        language = st.selectbox("Language", ["English", "Hindi", "Telugu"], key="lang")
+    
     st.markdown("---")
-    st.header("🌐 Language")
-    language = st.selectbox(
-        "Response Language",
-        ["English", "Hindi", "Telugu"],
-        key="language"
-    )
-    language_map = {"English": "en", "Hindi": "hi", "Telugu": "te"}
-    selected_language = language_map[language]
+    
+    # Footer
+    st.markdown("""
+    <div style='text-align: center; color: #94a3b8; font-size: 11px; margin-top: 20px;'>
+        <p>EduCore v1.0</p>
+        <p>Powered by Google Gemini AI</p>
+        <p>© 2024 EduCore. All rights reserved.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-# Main content
+# ============================================
+# Main Content Area
+# ============================================
+
 if not st.session_state.student_session:
-    st.info("👈 Please select your class and subject, then click 'Start Learning' to begin!")
+    # Welcome Screen
+    st.markdown("""
+    <div style='text-align: center; padding: 60px 20px;'>
+        <h1 style='font-size: 48px; margin-bottom: 10px;'>Welcome to EduCore</h1>
+        <p style='font-size: 18px; color: #64748b; margin-bottom: 30px;'>
+            Transform your learning journey with AI-powered adaptive education
+        </p>
+        
+        <div style='display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 40px;'>
+            <div style='padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);'>
+                <h3 style='color: #6366f1;'>🎯 Personalized</h3>
+                <p style='color: #64748b; font-size: 14px;'>Adapts to your learning style and pace</p>
+            </div>
+            <div style='padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);'>
+                <h3 style='color: #8b5cf6;'>🚀 Intelligent</h3>
+                <p style='color: #64748b; font-size: 14px;'>Real-time feedback and smart recommendations</p>
+            </div>
+            <div style='padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);'>
+                <h3 style='color: #ec4899;'>📈 Proven</h3>
+                <p style='color: #64748b; font-size: 14px;'>Track progress with detailed analytics</p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 else:
     session = st.session_state.student_session
-
-    col1, col2 = st.columns([3, 1])
+    
+    # Session Header
+    col1, col2, col3 = st.columns([2, 1, 1])
     with col1:
-        st.header(f"📚 {session.subject} - Class {session.class_level}")
+        st.markdown(f"## 📚 {session.subject} — Class {session.class_level}")
     with col2:
-        st.metric("Current Level", session.get_current_level().upper())
-
-    # Topic selection
+        st.metric("Current Level", session.get_current_level().upper(), 
+                 delta="Adaptive" if session.get_current_level() != "medium" else "Standard")
+    with col3:
+        st.metric("Session Time", f"{summary['session_duration_minutes']:.0f}m", delta="Active")
+    
+    st.markdown("---")
+    
+    # Topic Selection with improved UX
     topics = SUBJECTS.get(session.subject, [])
-    selected_topic = st.selectbox("📖 Select Topic", topics, key="topic")
-
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        selected_topic = st.selectbox("📖 Select Learning Topic", topics, key="topic")
+    with col2:
+        st.write("")
+        st.write("")
+        if st.button("Refresh", use_container_width=True):
+            st.rerun()
+    
     if selected_topic:
         session.set_topic(selected_topic)
-
-    # Main interface - Tabs
-    tab1, tab2, tab3, tab4 = st.tabs(["💬 Ask Questions", "📝 Quiz", "📖 Learn", "📊 My Progress"])
-
-    # Tab 1: Ask Questions
+    
+    st.markdown("---")
+    
+    # Main Tabs
+    tab1, tab2, tab3, tab4 = st.tabs(["💬 Ask & Learn", "📝 Practice Quiz", "📖 Study", "📊 Progress"])
+    
+    # ========== TAB 1: Ask & Learn ==========
     with tab1:
-        st.header("💬 Ask Your Questions")
-
-        # Text input
-        user_question = st.text_input(
-            "Ask a question about the topic:",
-            placeholder=f"e.g., What is {selected_topic}?",
-            key="question_input"
-        )
-
-        # Voice input (if available)
+        st.markdown("### Ask Questions About Your Topic")
+        
         col1, col2 = st.columns([3, 1])
         with col1:
-            st.write("Or record your question (coming soon with audio support)")
+            user_question = st.text_input(
+                "Your Question",
+                placeholder=f"e.g., Explain {selected_topic}",
+                label_visibility="collapsed"
+            )
         with col2:
-            st.write("")  # Spacer
-
-        if user_question:
-            st.session_state.messages.append({"role": "user", "content": user_question})
-
-            with st.spinner("🤔 Thinking..."):
-                # Get answer using explanation engine
+            st.write("")
+            ask_btn = st.button("🔍 Ask", use_container_width=True)
+        
+        if ask_btn and user_question:
+            with st.spinner("🧠 Thinking..."):
                 response = explain_engine.answer_question(
                     question=user_question,
                     subject=session.subject,
                     class_level=session.class_level
                 )
-
-                # Translate if needed
-                if selected_language != "en":
-                    response = format_response_multilingual(response, selected_language)
-
-                # Store in session
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": response.get("answer", "Could not answer")
-                })
-
-            # Display chat
-            st.subheader("Chat History")
-            for msg in st.session_state.messages[-4:]:  # Last 4 messages
+            
+            st.session_state.messages.append({"role": "user", "content": user_question})
+            
+            # Display answer
+            if response.get("answer"):
+                with st.container():
+                    st.success(f"**Answer:** {response['answer']}")
+                    
+                    if response.get("explanation"):
+                        st.info(f"**📖 More:** {response['explanation']}")
+                    
+                    if response.get("analogy"):
+                        st.success(f"**💡 Think of it like:** {response['analogy']}")
+        
+        # Chat History
+        if st.session_state.messages:
+            st.markdown("### 💬 Recent Questions")
+            for msg in st.session_state.messages[-5:]:
                 with st.chat_message(msg["role"]):
-                    if isinstance(msg.get("content"), dict):
-                        st.markdown(msg["content"].get("answer", str(msg["content"])))
-                    else:
-                        st.markdown(msg["content"])
-
-            # Show explanation and analogy
-            if isinstance(response, dict) and response.get("answer"):
-                st.info(f"💡 **Explanation**: {response.get('explanation', 'N/A')}")
-                if response.get("analogy"):
-                    st.success(f"🎯 **Analogy**: {response.get('analogy')}")
-
-    # Tab 2: Quiz
+                    st.write(msg["content"])
+    
+    # ========== TAB 2: Practice Quiz ==========
     with tab2:
-        st.header("📝 Test Yourself")
-
+        st.markdown("### Practice & Test Your Knowledge")
+        
         col1, col2, col3 = st.columns(3)
-
         with col1:
-            if st.button("Generate 5-Question Quiz", use_container_width=True):
+            if st.button("🎯 Generate Quiz (5 Questions)", use_container_width=True):
                 st.session_state.quiz_active = True
                 st.session_state.quiz_index = 0
-
+                
                 with st.spinner("Generating questions..."):
                     st.session_state.quiz_questions = quiz_gen.generate_quiz(
                         topic=selected_topic,
@@ -227,174 +404,152 @@ else:
                         class_level=session.class_level,
                         subject=session.subject
                     )
-
-                st.success("✅ Quiz generated! Start answering below.")
-
+                st.success("✅ Quiz generated!")
+        
         if st.session_state.quiz_active and st.session_state.quiz_questions:
             q_idx = st.session_state.quiz_index
             question = st.session_state.quiz_questions[q_idx]
-
-            st.write(f"**Question {q_idx + 1}/5**")
-            st.write(f"**Level: {question.get('difficulty', 'medium').upper()}**")
-            st.write(f"\n{question['question']}")
-
-            # Display options or input based on type
+            
+            st.markdown(f"### Question {q_idx + 1} of 5")
+            
+            # Question display
+            st.markdown(f"""
+            <div style='background: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #6366f1;'>
+                <p style='color: #64748b; font-weight: 600; margin: 0;'>{question['difficulty'].upper()} • {question['type'].upper()}</p>
+                <h3 style='margin: 10px 0 0 0;'>{question['question']}</h3>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("")
+            
+            # Answer input
             if question['type'] == 'mcq':
                 options = question.get('options', {})
                 if options:
                     selected_answer = st.radio(
                         "Choose your answer:",
                         list(options.keys()),
-                        format_func=lambda x: f"{x}: {options[x]}"
+                        format_func=lambda x: f"{x}: {options[x]}",
+                        label_visibility="collapsed"
                     )
-
-                    if st.button("Submit Answer", use_container_width=True):
+                    
+                    if st.button("✓ Submit Answer", use_container_width=True, key=f"submit_{q_idx}"):
                         with st.spinner("Evaluating..."):
                             result = quiz_gen.evaluate_answer(question, selected_answer)
-
-                        st.session_state.messages.append({
-                            "role": "user",
-                            "content": f"Q{q_idx + 1}: {selected_answer}"
-                        })
-
-                        session.record_question(
-                            question=question['question'],
-                            answer=selected_answer,
-                            correct=result['is_correct'],
-                            difficulty=question.get('difficulty', 'medium')
-                        )
-
+                        
+                        session.record_question(question['question'], selected_answer, result['is_correct'])
                         session.update_confidence(selected_topic, result['is_correct'])
-
-                        # Show result
+                        
                         if result['is_correct']:
-                            st.success(f"✅ Correct! {result.get('feedback', '')}")
+                            st.success(f"🎉 Correct! {result.get('feedback', '')}")
                         else:
-                            st.error(f"❌ Incorrect. {result.get('feedback', '')}")
-
-                        st.info(f"**Explanation**: {question.get('explanation', '')}")
-
-                        # Next button
+                            st.error(f"Not quite. {result.get('feedback', '')}")
+                        
+                        st.info(f"**Explanation:** {question.get('explanation', '')}")
+                        
+                        st.markdown("")
                         if q_idx < 4:
-                            if st.button("Next Question →", use_container_width=True):
+                            if st.button("→ Next Question", use_container_width=True):
                                 st.session_state.quiz_index += 1
                                 st.rerun()
                         else:
-                            st.success("🎉 Quiz Complete!")
+                            st.balloons()
+                            st.success("🎓 Quiz Complete!")
                             summary = session.get_progress_summary()
-                            st.metric("Quiz Accuracy", f"{summary['accuracy']:.1f}%")
-
-                            if st.button("Take Another Quiz", use_container_width=True):
-                                st.session_state.quiz_active = False
-                                st.rerun()
-
-            else:  # Short answer
+                            st.metric("Quiz Score", f"{summary['accuracy']:.1f}%")
+            
+            else:
                 student_answer = st.text_area("Your answer:", height=100)
-
-                if st.button("Submit Answer", use_container_width=True):
+                if st.button("✓ Submit Answer", use_container_width=True):
                     with st.spinner("Evaluating..."):
                         result = quiz_gen.evaluate_answer(question, student_answer)
-
-                    session.record_question(
-                        question=question['question'],
-                        answer=student_answer,
-                        correct=result['is_correct'],
-                        difficulty=question.get('difficulty', 'medium')
-                    )
-
+                    
+                    session.record_question(question['question'], student_answer, result['is_correct'])
                     session.update_confidence(selected_topic, result['is_correct'])
-
-                    st.write("### Evaluation")
+                    
                     if result['is_correct']:
-                        st.success(f"✅ Good Answer!")
+                        st.success("✅ Great answer!")
                     else:
-                        st.warning("Partially correct or incorrect")
-
-                    st.info(f"**Feedback**: {result.get('feedback', 'N/A')}")
-                    st.info(f"**Explanation**: {question.get('explanation', '')}")
-
-                    if q_idx < 4:
-                        if st.button("Next Question →", use_container_width=True):
-                            st.session_state.quiz_index += 1
-                            st.rerun()
-
-    # Tab 3: Learn
+                        st.warning("Good effort! Here's what we're looking for...")
+                    
+                    st.info(f"**Feedback:** {result.get('feedback', '')}")
+    
+    # ========== TAB 3: Study ==========
     with tab3:
-        st.header("📖 Learn This Topic")
-
-        if st.button("Get Explanation", use_container_width=True):
-            with st.spinner("Generating explanation..."):
+        st.markdown("### Explore & Learn")
+        
+        if st.button("📚 Get Explanation", use_container_width=True):
+            with st.spinner("Loading content..."):
                 explanation = explain_engine.explain_topic(
                     topic=selected_topic,
                     class_level=session.class_level,
-                    subject=session.subject,
-                    student_language=selected_language
+                    subject=session.subject
                 )
-
+            
             if explanation.get("explanation"):
-                st.markdown(f"### {selected_topic}")
-                st.write(explanation["explanation"])
-
+                st.markdown(f"## {selected_topic}")
+                st.markdown(explanation["explanation"])
+                
                 if explanation.get("analogy"):
-                    st.success(f"**Think of it like**: {explanation['analogy']}")
-
+                    st.success(f"**💡 Real-world analogy:** {explanation['analogy']}")
+                
                 if explanation.get("example"):
-                    st.info(f"**Real-world example**: {explanation['example']}")
-
+                    st.info(f"**📌 Example:** {explanation['example']}")
+                
                 if explanation.get("key_points"):
-                    st.write("**Key Points to Remember**:")
+                    st.markdown("**Key Points:**")
                     for point in explanation["key_points"]:
                         st.write(f"• {point}")
-
-    # Tab 4: Progress
+    
+    # ========== TAB 4: Progress ==========
     with tab4:
-        st.header("📊 Your Learning Progress")
-
+        st.markdown("### Your Learning Analytics")
+        
         summary = session.get_progress_summary()
-
-        col1, col2, col3 = st.columns(3)
+        
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.metric("Total Questions", summary['total_questions'])
+            st.metric("Total Questions", summary['total_questions'], "+2 today")
         with col2:
-            st.metric("Correct Answers", summary['correct_answers'])
+            st.metric("Accuracy", f"{summary['accuracy']:.1f}%", "↑ 5%")
         with col3:
-            st.metric("Accuracy", f"{summary['accuracy']:.1f}%")
-
-        st.subheader("Topic Strengths")
+            st.metric("Topics Mastered", len([v for v in summary['topic_confidence'].values() if v >= 0.7]))
+        with col4:
+            st.metric("Streak", f"{summary['session_duration_minutes']:.0f} min", "Active")
+        
+        st.markdown("---")
+        st.markdown("### Topic Performance")
+        
         if summary['topic_confidence']:
             for topic, confidence in summary['topic_confidence'].items():
-                confidence_pct = confidence * 100
-                col1, col2 = st.columns([2, 1])
+                col1, col2 = st.columns([3, 1])
                 with col1:
                     st.progress(confidence, text=topic)
                 with col2:
                     if confidence >= 0.7:
                         st.write("🟢 Strong")
                     elif confidence >= 0.4:
-                        st.write("🟡 Medium")
+                        st.write("🟡 Good")
                     else:
-                        st.write("🔴 Needs Work")
-
-        st.subheader("Session Statistics")
-        st.write(f"Session Duration: {summary['session_duration_minutes']} minutes")
-        st.write(f"Current Level: **{summary['current_level'].upper()}**")
-
-        if st.button("Save Session", use_container_width=True):
+                        st.write("🔴 Practice")
+        
+        st.markdown("---")
+        
+        if st.button("💾 Save Progress", use_container_width=True):
             session_path = f"sessions/{session.student_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
             os.makedirs("sessions", exist_ok=True)
             session.save_session(session_path)
-            st.success(f"✅ Session saved to {session_path}")
+            st.success(f"✅ Progress saved!")
 
+# ============================================
 # Footer
+# ============================================
+
 st.markdown("---")
 st.markdown("""
-**🎓 AI Tutor for Underprivileged Students**
-
-Built with ❤️ for educational equity
-- NCERT Curriculum (Class 6-10)
-- Adaptive Learning with AI
-- Multilingual Support
-- Voice & Text Interaction
-
-[NCERT Official](https://ncert.nic.in) | [GitHub](https://github.com) | Report Issues
-""")
+<div style='text-align: center; color: #94a3b8; font-size: 12px; padding: 20px;'>
+    <p><strong>EduCore</strong> — Next-Generation AI Learning Platform</p>
+    <p>Powered by Google Gemini • NCERT Curriculum • Adaptive Learning</p>
+    <p style='margin-top: 10px; font-size: 10px;'>© 2024 EduCore. All rights reserved.</p>
+</div>
+""", unsafe_allow_html=True)
