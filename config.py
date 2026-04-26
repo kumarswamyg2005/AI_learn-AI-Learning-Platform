@@ -7,11 +7,17 @@ load_dotenv()
 
 # API Keys
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GOOGLE_TRANSLATE_API_KEY = os.getenv("GOOGLE_TRANSLATE_API_KEY")
 GOOGLE_TTS_API_KEY = os.getenv("GOOGLE_TTS_API_KEY")
 
+# LLM Provider configuration
+# Options: "gemini" (FREE), "openai" (paid), "groq" (FREE)
+LLM_PROVIDER = "gemini"
+
 # Model configuration
-GPT_MODEL = "gpt-4"
+GPT_MODEL = "gpt-4"  # Fallback for OpenAI
+GEMINI_MODEL = "gemini-2.5-flash"  # FREE, high quality
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 # RAG configuration

@@ -1,12 +1,19 @@
-"""RAG-powered explanation engine"""
+"""RAG-powered explanation engine using Gemini or OpenAI"""
 
-import openai
+import json
+import os
 from typing import Dict
 
-from config import GPT_MODEL, MAX_RESPONSE_LENGTH
+from config import LLM_PROVIDER, GEMINI_MODEL, GPT_MODEL, GEMINI_API_KEY
 from rag.retriever import RAGRetriever
 
-openai.api_key = openai.api_key
+# Initialize LLM
+if LLM_PROVIDER == "gemini":
+    import google.generativeai as genai
+    genai.configure(api_key=GEMINI_API_KEY)
+else:
+    import openai
+    openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class ExplanationEngine:
@@ -14,6 +21,25 @@ class ExplanationEngine:
 
     def __init__(self):
         self.retriever = RAGRetriever()
+        self.provider = LLM_PROVIDER
+
+    def _call_llm(self, prompt: str) -> str:
+        """Call LLM using configured provider"""
+        try:
+            if self.provider == "gemini":
+                model = genai.GenerativeModel(GEMINI_MODEL)
+                response = model.generate_content(prompt)
+                return response.text
+            else:
+                response = openai.ChatCompletion.create(
+                    model=GPT_MODEL,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.6,
+                    max_tokens=400
+                )
+                return response.choices[0].message.content
+        except Exception as e:
+            raise Exception(f"LLM call failed: {e}")
 
     def explain_topic(
         self,
@@ -23,7 +49,7 @@ class ExplanationEngine:
         student_language: str = "en"
     ) -> Dict:
         """
-        Explain a topic using RAG context and GPT-4.
+        Explain a topic using RAG context and LLM.
 
         Args:
             topic: Topic to explain
@@ -65,7 +91,7 @@ INSTRUCTIONS:
 4. Provide ONE simple real-world example
 5. List 3-4 key points to remember
 
-RESPOND IN JSON FORMAT:
+RESPOND IN JSON FORMAT ONLY:
 {{
     "explanation": "Simple explanation in 1-2 paragraphs",
     "analogy": "Real-world analogy here",
@@ -75,15 +101,8 @@ RESPOND IN JSON FORMAT:
 """
 
         try:
-            response = openai.ChatCompletion.create(
-                model=GPT_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.6,
-                max_tokens=400
-            )
-
-            import json
-            result = json.loads(response.choices[0].message.content)
+            response_text = self._call_llm(prompt)
+            result = json.loads(response_text)
             result["language"] = student_language
             result["topic"] = topic
             return result
@@ -119,20 +138,13 @@ The analogy should:
 - Help understand the concept deeply
 - Be exactly 1-2 sentences
 
-Example: "Photosynthesis is like cooking - plants use sunlight as heat, water as ingredients, and CO2 as more ingredients to create their own food (glucose)."
+Example: "Photosynthesis is like cooking - plants use sunlight as heat, water as ingredients, and CO2 to create their own food."
 
 RESPOND WITH ONLY THE ANALOGY, NO JSON:
 """
 
         try:
-            response = openai.ChatCompletion.create(
-                model=GPT_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7,
-                max_tokens=100
-            )
-
-            return response.choices[0].message.content.strip()
+            return self._call_llm(prompt).strip()
 
         except Exception as e:
             return f"Could not generate analogy: {str(e)}"
@@ -144,7 +156,7 @@ RESPOND WITH ONLY THE ANALOGY, NO JSON:
         class_level: int
     ) -> Dict:
         """
-        Answer a student's question using RAG and GPT-4.
+        Answer a student's question using RAG and LLM.
 
         Args:
             question: Student's question
@@ -185,7 +197,7 @@ INSTRUCTIONS:
 3. If helpful, include an analogy
 4. Encourage further learning
 
-RESPOND IN JSON:
+RESPOND IN JSON FORMAT ONLY:
 {{
     "answer": "Direct answer to the question",
     "explanation": "Brief explanation or additional context",
@@ -194,15 +206,8 @@ RESPOND IN JSON:
 """
 
         try:
-            response = openai.ChatCompletion.create(
-                model=GPT_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.6,
-                max_tokens=300
-            )
-
-            import json
-            result = json.loads(response.choices[0].message.content)
+            response_text = self._call_llm(prompt)
+            result = json.loads(response_text)
             result["sources"] = sources
             result["question"] = question
             return result

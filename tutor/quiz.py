@@ -1,13 +1,19 @@
-"""Generate adaptive questions using GPT-4"""
+"""Generate adaptive questions using Gemini or OpenAI"""
 
 import json
+import os
 from typing import List, Dict
-import openai
 
-from config import GPT_MODEL
+from config import LLM_PROVIDER, GEMINI_MODEL, GPT_MODEL, GEMINI_API_KEY
 from rag.retriever import RAGRetriever
 
-openai.api_key = openai.api_key  # Uses env var
+# Initialize LLM
+if LLM_PROVIDER == "gemini":
+    import google.generativeai as genai
+    genai.configure(api_key=GEMINI_API_KEY)
+else:
+    import openai
+    openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class QuizGenerator:
@@ -15,6 +21,25 @@ class QuizGenerator:
 
     def __init__(self):
         self.retriever = RAGRetriever()
+        self.provider = LLM_PROVIDER
+
+    def _call_llm(self, prompt: str) -> str:
+        """Call LLM using configured provider"""
+        try:
+            if self.provider == "gemini":
+                model = genai.GenerativeModel(GEMINI_MODEL)
+                response = model.generate_content(prompt)
+                return response.text
+            else:
+                response = openai.ChatCompletion.create(
+                    model=GPT_MODEL,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.7,
+                    max_tokens=500
+                )
+                return response.choices[0].message.content
+        except Exception as e:
+            raise Exception(f"LLM call failed: {e}")
 
     def generate_question(
         self,
@@ -25,7 +50,7 @@ class QuizGenerator:
         question_type: str = "mcq"
     ) -> Dict:
         """
-        Generate a single question using GPT-4 with RAG context.
+        Generate a single question using LLM with RAG context.
 
         Args:
             topic: Topic to generate question about
@@ -82,18 +107,11 @@ RESPOND IN JSON FORMAT:
 """
 
         try:
-            response = openai.ChatCompletion.create(
-                model=GPT_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7,
-                max_tokens=500
-            )
-
-            result = json.loads(response.choices[0].message.content)
+            response_text = self._call_llm(prompt)
+            result = json.loads(response_text)
             return result
 
         except json.JSONDecodeError:
-            # Fallback if JSON parsing fails
             return {
                 "type": question_type,
                 "question": "What is the importance of this topic?",
@@ -156,7 +174,7 @@ RESPOND IN JSON FORMAT:
 
     def evaluate_answer(self, question: Dict, student_answer: str) -> Dict:
         """
-        Evaluate student's answer using GPT-4.
+        Evaluate student's answer using LLM.
 
         Args:
             question: Question dict
@@ -175,23 +193,17 @@ EXPLANATION: {question['explanation']}
 If MCQ: Is the selected option correct?
 If short-answer: Does the answer show understanding of the concept?
 
-RESPOND IN JSON:
+RESPOND IN JSON ONLY (no markdown):
 {{
-    "is_correct": true/false,
+    "is_correct": true or false,
     "score": 0-100,
     "feedback": "Constructive feedback for the student (1-2 sentences, appropriate for Class {question.get('difficulty', 'unknown')} level)"
 }}
 """
 
         try:
-            response = openai.ChatCompletion.create(
-                model=GPT_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.5,
-                max_tokens=200
-            )
-
-            result = json.loads(response.choices[0].message.content)
+            response_text = self._call_llm(prompt)
+            result = json.loads(response_text)
             return result
 
         except Exception as e:
