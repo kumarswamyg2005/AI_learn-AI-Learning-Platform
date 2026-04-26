@@ -135,3 +135,20 @@ def detect_chapter(text: str) -> str | None:
     if match:
         return match.group(1).strip()
     return None
+
+
+class PDFLoader:
+    """Thin class wrapper around the module-level PDF loading functions."""
+
+    def load_pdf(self, pdf_path: str, subject: str = None, class_level: int = None) -> List[Dict]:
+        chunks = chunk_pdf(pdf_path)
+        if subject or class_level:
+            for c in chunks:
+                if subject:
+                    c["subject"] = subject
+                if class_level:
+                    c["class"] = class_level
+        return chunks
+
+    def load_directory(self, pdf_dir: str) -> List[Dict]:
+        return load_ncert(pdf_dir)
