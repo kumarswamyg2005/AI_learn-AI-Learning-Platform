@@ -9,8 +9,7 @@ Transform education with **EduCore**, a next-generation adaptive learning platfo
 - **📚 Official Curriculum**: Complete NCERT Class 6-10 coverage (Mathematics, Science, Social Studies)
 - **🌐 Multilingual**: English, Hindi, Telugu, Kannada, Malayalam support
 - **📊 Advanced Analytics**: Real-time performance tracking and insights
-- **📱 Voice Enabled**: Speech-to-text and text-to-speech support
-- **💰 100% Free**: No subscriptions, no hidden costs
+
 
 ## ✨ Core Features
 
