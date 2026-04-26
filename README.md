@@ -1,4 +1,4 @@
-# ✨ EduCore — Premium AI Learning Platform
+# ✨ AI_learn — AI Learning Platform
 
 Transform education with **EduCore**, a next-generation adaptive learning platform powered by Google Gemini AI. Personalized tutoring for NCERT Class 6-10 curriculum with real-time feedback, intelligent question generation, and comprehensive progress tracking.
 
@@ -15,24 +15,28 @@ Transform education with **EduCore**, a next-generation adaptive learning platfo
 ## ✨ Core Features
 
 ### 1. **Adaptive Learning Engine**
+
 - Performance-based difficulty progression
 - Confidence tracking with exponential moving average
 - Personalized learning paths
 - Real-time adaptation
 
 ### 2. **AI-Powered Tutoring**
+
 - RAG-based explanations from official NCERT content
 - Real-world analogies for complex concepts
 - Natural language understanding
 - Instant feedback on answers
 
 ### 3. **Smart Quiz Generation**
+
 - MCQ and short-answer questions
 - Difficulty progression (Easy → Hard)
 - Auto-evaluation with detailed feedback
 - Performance-based recommendations
 
 ### 4. **Comprehensive Analytics**
+
 - Topic strength visualization
 - Accuracy tracking
 - Time-on-task monitoring
@@ -40,6 +44,7 @@ Transform education with **EduCore**, a next-generation adaptive learning platfo
 - Personalized recommendations
 
 ### 5. **Professional Interface**
+
 - Clean, intuitive design
 - Real-time chat experience
 - Progress dashboard
@@ -48,6 +53,7 @@ Transform education with **EduCore**, a next-generation adaptive learning platfo
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Python 3.10+
 - Free Google Gemini API key
 - 500MB disk space for NCERT content
@@ -83,11 +89,12 @@ Visit: **http://localhost:8501**
 ## 📚 Curriculum Coverage
 
 ### Classes 6-10
-| Subject | Topics | Chapters |
-|---------|--------|----------|
-| **Mathematics** | Algebra, Geometry, Numbers, Ratios | 60+ |
-| **Science** | Physics, Chemistry, Biology | 48+ |
-| **Social Studies** | Geography, History, Civics | 52+ |
+
+| Subject            | Topics                             | Chapters |
+| ------------------ | ---------------------------------- | -------- |
+| **Mathematics**    | Algebra, Geometry, Numbers, Ratios | 60+      |
+| **Science**        | Physics, Chemistry, Biology        | 48+      |
+| **Social Studies** | Geography, History, Civics         | 52+      |
 
 ## 🎯 How It Works
 
@@ -109,39 +116,43 @@ Difficulty Adjustment
 
 ## 📊 Performance Metrics
 
-| Metric | Value |
-|--------|-------|
-| Questions Generated | Unlimited |
-| API Cost | **Free** (Gemini tier) |
-| Daily Student Capacity | ~300 students |
-| Response Time | <3 seconds |
-| Accuracy | 95%+ |
+| Metric                 | Value                  |
+| ---------------------- | ---------------------- |
+| Questions Generated    | Unlimited              |
+| API Cost               | **Free** (Gemini tier) |
+| Daily Student Capacity | ~300 students          |
+| Response Time          | <3 seconds             |
+| Accuracy               | 95%+                   |
 
 ## 🔧 Technology Stack
 
-| Component | Technology |
-|-----------|-----------|
-| **LLM** | Google Gemini 2.5 Flash |
-| **Embeddings** | Sentence-Transformers |
-| **Vector DB** | ChromaDB (local) |
-| **UI Framework** | Streamlit |
-| **Speech** | Whisper + gTTS |
-| **Database** | JSON (sessions) |
+| Component        | Technology              |
+| ---------------- | ----------------------- |
+| **LLM**          | Google Gemini 2.5 Flash |
+| **Embeddings**   | Sentence-Transformers   |
+| **Vector DB**    | ChromaDB (local)        |
+| **UI Framework** | Streamlit               |
+| **Speech**       | Whisper + gTTS          |
+| **Database**     | JSON (sessions)         |
 
 ## 💡 Key Concepts
 
 ### Confidence Tracking
+
 Uses exponential moving average to track mastery per topic:
+
 - Correct answer: +0.1 confidence
 - Incorrect answer: -0.15 confidence
 - Range: 0.0 (novice) → 1.0 (expert)
 
 ### Difficulty Adaptation
+
 - **Easy**: confidence < 0.4 (build fundamentals)
 - **Medium**: 0.4 ≤ confidence < 0.7 (apply concepts)
 - **Hard**: confidence ≥ 0.7 (mastery challenges)
 
 ### RAG Pipeline
+
 1. Load NCERT PDFs
 2. Chunk into 500-word segments
 3. Embed using sentence-transformers
@@ -151,6 +162,7 @@ Uses exponential moving average to track mastery per topic:
 ## 📖 Usage Scenarios
 
 ### For Students
+
 ```
 1. Select Class & Subject
 2. Choose Topic
@@ -160,6 +172,7 @@ Uses exponential moving average to track mastery per topic:
 ```
 
 ### For Teachers
+
 ```
 1. Share login credentials
 2. Monitor student progress
@@ -168,6 +181,7 @@ Uses exponential moving average to track mastery per topic:
 ```
 
 ### For Parents
+
 ```
 1. View child's performance
 2. Track learning trends
@@ -188,11 +202,13 @@ Uses exponential moving average to track mastery per topic:
 ## 📈 Scalability
 
 ### Single Instance
+
 - ~300 daily active students
 - 1,500 free Gemini API requests/day
 - Embedded ChromaDB
 
 ### Enterprise Scale
+
 - Multiple instances with load balancing
 - Switch to managed Gemini API
 - PostgreSQL for session storage
@@ -209,6 +225,7 @@ Uses exponential moving average to track mastery per topic:
 ## 📝 API Integration
 
 ### Gemini API
+
 ```python
 from config import GEMINI_API_KEY
 import google.generativeai as genai
@@ -219,7 +236,9 @@ response = model.generate_content("What is X?")
 ```
 
 ### Custom LLM
+
 To use OpenAI or other LLMs:
+
 ```python
 # Edit config.py
 LLM_PROVIDER = "openai"  # or "groq", "azure", etc.
@@ -241,6 +260,7 @@ LLM_PROVIDER = "openai"  # or "groq", "azure", etc.
 ### Troubleshooting
 
 **Issue**: "No chunks found"
+
 ```bash
 # Ensure PDFs in data/ncert_pdfs/
 # Then reinitialize:
@@ -248,6 +268,7 @@ python3 init_rag.py
 ```
 
 **Issue**: "API key invalid"
+
 ```bash
 # Check .env file:
 cat .env
@@ -257,6 +278,7 @@ cat .env
 ```
 
 **Issue**: "Streamlit not found"
+
 ```bash
 pip install streamlit
 ```

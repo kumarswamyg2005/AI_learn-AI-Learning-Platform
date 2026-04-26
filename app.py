@@ -1,4 +1,4 @@
-"""EduCore - Premium AI-Powered Learning Platform"""
+"""EduCore — Intelligent Learning Platform"""
 
 import streamlit as st
 import plotly.graph_objects as go
@@ -13,1028 +13,692 @@ from utils.translate import detect_language, translate_and_detect, format_respon
 from utils.speech import SpeechProcessor
 from utils.report import ReportGenerator
 
-# ============================================
-# Page Configuration & Styling
-# ============================================
-
+# ─────────────────────────────────────────────
+# Page Config
+# ─────────────────────────────────────────────
 st.set_page_config(
-    page_title="EduCore - AI Learning Platform",
-    page_icon="✨",
+    page_title="EduCore",
+    page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded",
-    menu_items={"About": "EduCore v1.0 - Next Generation Learning"}
 )
 
-# Custom CSS for professional look - Modern Design
+# ─────────────────────────────────────────────
+# Global CSS  (injected once at the top)
+# ─────────────────────────────────────────────
 st.markdown("""
 <style>
-    /* Root variables */
-    :root {
-        --primary: #6366f1;
-        --secondary: #8b5cf6;
-        --accent: #ec4899;
-        --dark: #1e293b;
-        --light: #f8fafc;
-        --success: #10b981;
-        --warning: #f59e0b;
-        --error: #ef4444;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    /* Global styles */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+/* ── reset & base ── */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+.block-container {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+}
 
-    /* Main container */
-    .main {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e0e7ff 100%);
-        min-height: 100vh;
-    }
+/* ── sidebar ── */
+[data-testid="stSidebar"] {
+    background: #0f172a;
+    border-right: 1px solid #1e293b;
+}
+[data-testid="stSidebar"] * {
+    color: #e2e8f0 !important;
+}
+[data-testid="stSidebar"] .stSelectbox label,
+[data-testid="stSidebar"] .stTextInput label {
+    color: #94a3b8 !important;
+    font-size: 12px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+[data-testid="stSidebar"] hr {
+    border-color: #1e293b !important;
+}
 
-    /* Headers with gradient */
-    h1, h2, h3, h4, h5, h6 {
-        color: #1e293b;
-        font-weight: 700;
-        letter-spacing: -0.5px;
-    }
+/* ── buttons ── */
+.stButton > button {
+    background: #4f46e5;
+    color: #fff !important;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 20px;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+.stButton > button:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79,70,229,0.35);
+}
+.stButton > button:active { transform: translateY(0); }
 
-    h1 {
-        font-size: 2.5rem;
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
+/* ── inputs ── */
+.stTextInput input, .stTextArea textarea, .stSelectbox select {
+    border-radius: 8px !important;
+    border: 1.5px solid #e2e8f0 !important;
+    font-size: 14px !important;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.stTextInput input:focus, .stTextArea textarea:focus {
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
+}
 
-    /* Sidebar styling - Modern dark theme */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-        border-right: 1px solid rgba(99, 102, 241, 0.2);
-    }
+/* ── tabs ── */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 4px;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 10px;
+}
+.stTabs [data-baseweb="tab"] {
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #64748b;
+    background: transparent;
+    border: none;
+    transition: all 0.2s;
+}
+.stTabs [aria-selected="true"] {
+    background: white !important;
+    color: #4f46e5 !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
 
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3,
-    [data-testid="stSidebar"] label {
-        color: #f1f5f9 !important;
-        font-weight: 600;
-    }
+/* ── metrics ── */
+[data-testid="stMetric"] {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px !important;
+}
+[data-testid="stMetricValue"] {
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+}
+[data-testid="stMetricLabel"] {
+    font-size: 12px !important;
+    color: #64748b !important;
+    font-weight: 500 !important;
+}
 
-    [data-testid="stSidebar"] p {
-        color: #cbd5e1 !important;
-    }
+/* ── alerts ── */
+[data-testid="stAlert"] {
+    border-radius: 10px !important;
+    border: none !important;
+}
 
-    /* Metric cards */
-    [data-testid="stMetricValue"] {
-        color: #6366f1;
-        font-weight: 700;
-        font-size: 2.2rem;
-        letter-spacing: -1px;
-    }
+/* ── progress ── */
+.stProgress > div > div > div {
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    border-radius: 99px;
+}
 
-    [data-testid="stMetricLabel"] {
-        color: #475569 !important;
-        font-weight: 600;
-    }
-
-    /* Buttons - Modern style */
-    .stButton > button {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-weight: 600;
-        padding: 12px 28px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        cursor: pointer;
-    }
-
-    .stButton > button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 25px rgba(99, 102, 241, 0.4);
-        background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
-    }
-
-    .stButton > button:active {
-        transform: translateY(-1px);
-    }
-
-    /* Input fields - Modern style */
-    .stTextInput > div > div > input,
-    .stSelectbox > div > div > select,
-    .stTextArea > div > div > textarea {
-        border-radius: 10px;
-        border: 2px solid #e2e8f0;
-        padding: 12px 16px;
-        background-color: #ffffff;
-        transition: all 0.3s ease;
-        font-size: 14px;
-    }
-
-    .stTextInput > div > div > input:focus,
-    .stSelectbox > div > div > select:focus,
-    .stTextArea > div > div > textarea:focus {
-        border-color: #6366f1;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), 0 4px 12px rgba(99, 102, 241, 0.2);
-        outline: none;
-    }
-
-    /* File uploader */
-    .stFileUploader {
-        border-radius: 10px;
-        border: 2px dashed #cbd5e1;
-        padding: 20px;
-        transition: all 0.3s ease;
-    }
-
-    .stFileUploader:hover {
-        border-color: #6366f1;
-        background-color: rgba(99, 102, 241, 0.05);
-    }
-
-    /* Success/Error/Warning messages */
-    .stSuccess {
-        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-        border-left: 4px solid #10b981;
-        border-radius: 10px;
-        padding: 16px;
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
-    }
-
-    .stError {
-        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-        border-left: 4px solid #ef4444;
-        border-radius: 10px;
-        padding: 16px;
-        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
-    }
-
-    .stWarning {
-        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-        border-left: 4px solid #f59e0b;
-        border-radius: 10px;
-        padding: 16px;
-        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
-    }
-
-    .stInfo {
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-        border-left: 4px solid #3b82f6;
-        border-radius: 10px;
-        padding: 16px;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-    }
-
-    /* Tabs - Modern style */
-    .stTabs [data-baseweb="tab"] {
-        padding: 12px 24px;
-        font-weight: 600;
-        border-radius: 10px 10px 0 0;
-        border-bottom: 3px solid transparent;
-        transition: all 0.3s ease;
-    }
-
-    .stTabs [data-baseweb="tab"]:hover {
-        background-color: rgba(99, 102, 241, 0.1);
-    }
-
-    .stTabs [aria-selected="true"] {
-        border-bottom-color: #6366f1;
-        color: #6366f1;
-    }
-
-    /* Progress bar */
-    .stProgress > div > div > div {
-        background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
-    }
-
-    /* Divider */
-    hr {
-        border: none;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
-        margin: 2rem 0;
-    }
-
-    /* Containers and cards */
-    .card {
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e2e8f0;
-        transition: all 0.3s ease;
-    }
-
-    .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-        border-color: #cbd5e1;
-    }
-
-    /* Selectbox arrow */
-    .stSelectbox svg {
-        color: #6366f1;
-    }
-
-    /* Radio buttons */
-    .stRadio > label > div {
-        border-radius: 8px;
-        border: 2px solid #e2e8f0;
-        padding: 12px 16px;
-        transition: all 0.3s ease;
-    }
-
-    .stRadio > label > div:hover {
-        border-color: #6366f1;
-        background-color: rgba(99, 102, 241, 0.05);
-    }
-
-    /* Expander */
-    .stExpander {
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-    }
-
-    .stExpander > div > button {
-        border-radius: 10px;
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: #f1f5f9;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
-
-    /* Additional Premium Styling */
-
-    /* Expander styling */
-    .streamlit-expanderHeader {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05)) !important;
-        border-radius: 10px !important;
-        transition: all 0.3s ease;
-    }
-
-    .streamlit-expanderHeader:hover {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)) !important;
-    }
-
-    /* Text area styling */
-    .stTextArea textarea {
-        border-radius: 10px !important;
-        border: 2px solid #e2e8f0 !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    }
-
-    .stTextArea textarea:focus {
-        border-color: #6366f1 !important;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15) !important;
-    }
-
-    /* Slider styling */
-    .stSlider > div > div > div > div {
-        background: linear-gradient(90deg, #6366f1, #8b5cf6) !important;
-    }
-
-    /* Chat message styling */
-    .stChatMessage {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-        border-radius: 12px !important;
-        border-left: 4px solid #6366f1 !important;
-    }
-
-    /* Number input */
-    .stNumberInput > div > div > input {
-        border-radius: 10px !important;
-        border: 2px solid #e2e8f0 !important;
-    }
-
-    .stNumberInput > div > div > input:focus {
-        border-color: #6366f1 !important;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15) !important;
-    }
-
-    /* Checkbox styling */
-    .stCheckbox > label > div {
-        border-radius: 6px !important;
-    }
-
-    /* Columns spacing */
-    .stColumn {
-        padding: 0 12px;
-    }
-
-    /* Better link styling */
-    a {
-        color: #6366f1 !important;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    a:hover {
-        color: #8b5cf6 !important;
-        text-decoration: underline;
-    }
-
-    /* Code block styling */
-    pre {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
-        border: 1px solid #334155 !important;
-        border-radius: 12px !important;
-        padding: 20px !important;
-    }
-
-    code {
-        color: #e2e8f0 !important;
-        font-family: 'Fira Code', 'Courier New', monospace !important;
-    }
-
-    /* Spinner animation */
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    .stSpinner {
-        animation: spin 1s linear infinite;
-    }
-
-    /* Smooth page transitions */
-    .main {
-        animation: fadeIn 0.3s ease-in;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Better select styling */
-    select {
-        background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366f1' d='M6 9L1 4h10z'/%3E%3C/svg%3E") no-repeat right 10px center !important;
-        padding-right: 30px !important;
-        appearance: none !important;
-        -webkit-appearance: none !important;
-    }
-
-    /* Slider value label */
-    .stMetric {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05)) !important;
-        padding: 20px !important;
-        border-radius: 12px !important;
-        border: 1px solid #e2e8f0 !important;
-    }
-
-    /* Better container styling */
-    .stContainer {
-        border-radius: 16px !important;
-    }
-
-    /* Glowing effect on focus */
-    *:focus {
-        outline: none !important;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15) !important;
-    }
+/* ── scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
 </style>
 """, unsafe_allow_html=True)
 
-# ============================================
-# Session State Initialization
-# ============================================
+# ─────────────────────────────────────────────
+# Session State
+# ─────────────────────────────────────────────
+for key, val in {
+    "student_session": None,
+    "messages": [],
+    "quiz_active": False,
+    "quiz_questions": [],
+    "quiz_index": 0,
+    "quiz_submitted": False,
+}.items():
+    if key not in st.session_state:
+        st.session_state[key] = val
 
-if "student_session" not in st.session_state:
-    st.session_state.student_session = None
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-if "quiz_active" not in st.session_state:
-    st.session_state.quiz_active = False
-if "quiz_questions" not in st.session_state:
-    st.session_state.quiz_questions = []
-if "quiz_index" not in st.session_state:
-    st.session_state.quiz_index = 0
+# ─────────────────────────────────────────────
+# Engine Init (cached)
+# ─────────────────────────────────────────────
+@st.cache_resource
+def load_engines():
+    return QuizGenerator(), ExplanationEngine(), ReportGenerator(), SpeechProcessor()
 
-# Initialize engines
-quiz_gen = QuizGenerator()
-explain_engine = ExplanationEngine()
-report_gen = ReportGenerator()
-speech_processor = SpeechProcessor()
+quiz_gen, explain_engine, report_gen, speech_proc = load_engines()
 
-# ============================================
-# Header Section
-# ============================================
-
-st.markdown("""
-<div style='background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%); border-radius: 16px; padding: 40px; margin-bottom: 30px; box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);'>
-    <div style='display: flex; justify-content: space-between; align-items: center;'>
-        <div>
-            <h1 style='color: white; font-size: 44px; font-weight: 800; margin: 0 0 8px 0;'>✨ EduCore</h1>
-            <p style='color: rgba(255,255,255,0.95); font-size: 16px; font-weight: 500; margin: 0;'>Next-Generation Adaptive Learning Platform</p>
-        </div>
-        <div style='text-align: right;'>
-            <p style='color: rgba(255,255,255,0.9); font-size: 13px; margin: 0 0 6px 0;'>🚀 Powered by Gemini AI</p>
-            <div style='background: rgba(255,255,255,0.25); color: white; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block;'>● Active Now</div>
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# ============================================
-# Sidebar Configuration
-# ============================================
-
+# ─────────────────────────────────────────────
+# Sidebar
+# ─────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🎯 Learning Dashboard")
-    st.markdown("---")
-    
-    # Student Profile
-    st.markdown("### Student Profile")
-    student_id = st.text_input("Name or ID", value="Student", key="student_id", 
-                               help="Your learning identifier")
-    
-    # Learning Path Selection
-    st.markdown("### Learning Path")
-    selected_class = st.selectbox(
-        "Class Level",
-        CLASSES,
-        format_func=lambda x: f"Class {x}",
-        help="Select your current class level"
-    )
-    
-    selected_subject = st.selectbox(
-        "Subject",
-        list(SUBJECTS.keys()),
-        help="Choose the subject to focus on"
-    )
-    
-    st.markdown("---")
+    # Logo / brand
+    st.markdown("""
+    <div style='padding:16px 0 8px 0'>
+        <span style='font-size:22px;font-weight:800;color:#e2e8f0;letter-spacing:-0.5px'>🎓 EduCore</span><br>
+        <span style='font-size:11px;color:#64748b;font-weight:500'>Intelligent Learning Platform</span>
+    </div>
+    """, unsafe_allow_html=True)
+    st.divider()
 
-    # Study Materials Section
-    with st.expander("📚 Study Materials", expanded=False):
-        st.markdown("**Manage your learning resources**")
+    # Profile
+    st.caption("STUDENT PROFILE")
+    student_id = st.text_input("Your Name", value="Student", key="student_id",
+                               label_visibility="collapsed",
+                               placeholder="Enter your name…")
+    st.caption("LEARNING PATH")
+    selected_class = st.selectbox("Class", CLASSES,
+                                  format_func=lambda x: f"Class {x}",
+                                  label_visibility="collapsed")
+    selected_subject = st.selectbox("Subject", list(SUBJECTS.keys()),
+                                    label_visibility="collapsed")
 
-        material_tab1, material_tab2 = st.tabs(["Upload", "Download"])
+    st.divider()
 
-        with material_tab1:
-            st.markdown("**Upload Custom PDF**")
-            pdf_file = st.file_uploader(
-                "Upload PDF",
-                type="pdf",
-                help="Upload NCERT or custom textbooks",
-                label_visibility="collapsed"
-            )
+    # Study Materials
+    st.caption("STUDY MATERIALS")
+    with st.expander("📄 Upload / Download Books"):
+        up_tab, dl_tab = st.tabs(["Upload PDF", "NCERT Books"])
 
-            if pdf_file:
+        with up_tab:
+            uploaded = st.file_uploader("Drop a PDF here", type="pdf",
+                                        label_visibility="collapsed")
+            if uploaded:
+                dest = f"data/custom_pdfs/{uploaded.name}"
                 os.makedirs("data/custom_pdfs", exist_ok=True)
-                pdf_path = os.path.join("data/custom_pdfs", pdf_file.name)
-                with open(pdf_path, "wb") as f:
-                    f.write(pdf_file.getbuffer())
-
-                st.success(f"✅ Uploaded: {pdf_file.name}")
-
-                # Auto-process the PDF
-                if st.button("🔄 Process & Index PDF", use_container_width=True):
-                    with st.spinner("Processing PDF..."):
+                with open(dest, "wb") as f:
+                    f.write(uploaded.getbuffer())
+                st.success(f"Saved — {uploaded.name}")
+                if st.button("Index PDF", use_container_width=True):
+                    with st.spinner("Processing…"):
                         try:
                             from rag.loader import PDFLoader
-                            loader = PDFLoader()
-                            loader.load_pdf(pdf_path, subject=selected_subject, class_level=selected_class)
-                            st.success("📚 PDF indexed successfully!")
+                            PDFLoader().load_pdf(dest, subject=selected_subject,
+                                                 class_level=selected_class)
+                            st.success("Indexed successfully!")
                         except Exception as e:
-                            st.error(f"Error processing PDF: {str(e)}")
+                            st.error(str(e))
 
-        with material_tab2:
-            st.markdown("**Download Official NCERT Books**")
-            st.info("📖 Download official NCERT textbooks for Classes 6-10")
-
-            if st.button("⬇️ Download All NCERT Books", use_container_width=True, key="download_ncert"):
-                with st.spinner("🔄 Downloading books from ncert.nic.in..."):
+        with dl_tab:
+            st.caption("Download official NCERT books (Classes 6–10)")
+            if st.button("Download All Books", use_container_width=True):
+                with st.spinner("Downloading from ncert.nic.in…"):
                     try:
-                        from download_ncert_books import download_ncert_books, get_available_books
-                        successful, failed = download_ncert_books()
-
-                        if successful > 0:
-                            st.success(f"✅ Successfully downloaded {successful} books!")
-
-                        if failed > 0:
-                            st.warning(f"⚠️ Failed to download {failed} books")
-
-                        # Index the books
-                        st.info("🔄 Indexing books into knowledge base...")
-                        try:
-                            from rag.loader import PDFLoader
-                            loader = PDFLoader()
-                            pdf_dir = "data/ncert_pdfs"
-
-                            if os.path.exists(pdf_dir):
-                                for filename in os.listdir(pdf_dir):
-                                    if filename.endswith('.pdf'):
-                                        pdf_path = os.path.join(pdf_dir, filename)
-                                        try:
-                                            # Extract class and subject from filename
-                                            parts = filename.replace('.pdf', '').split('_')
-                                            if len(parts) >= 2:
-                                                class_level = int(parts[0].replace('Class', ''))
-                                                subject = '_'.join(parts[1:]).replace('_', ' ')
-                                                loader.load_pdf(pdf_path, subject=subject, class_level=class_level)
-                                        except Exception as e:
-                                            pass
-
-                            st.success("✨ All books indexed successfully!")
-
-                        except Exception as e:
-                            st.error(f"Error indexing books: {str(e)}")
-
+                        from download_ncert_books import download_ncert_books
+                        ok, fail = download_ncert_books(verbose=False)
+                        st.success(f"{ok} books downloaded!")
+                        if fail:
+                            st.warning(f"{fail} failed")
                     except Exception as e:
-                        st.error(f"Download error: {str(e)}")
-
-            # Show downloaded books
-            st.markdown("**Available Books:**")
+                        st.error(str(e))
+            # list available
             try:
                 from download_ncert_books import get_available_books
                 books = get_available_books()
+                for name, meta in books.items():
+                    st.caption(f"✓ {name} ({meta['size_mb']} MB)")
+                if not books:
+                    st.caption("No books yet.")
+            except Exception:
+                pass
 
-                if books:
-                    for book_name, info in books.items():
-                        st.caption(f"✓ {book_name} ({info['size_mb']} MB)")
-                else:
-                    st.caption("No books downloaded yet. Click the button above to get started!")
-            except Exception as e:
-                st.caption("Unable to load books list")
+    st.divider()
 
-    st.markdown("---")
-
-    # Start Learning Button
-    if st.button("🚀 Start Learning Session", use_container_width=True, key="start_btn"):
+    # Start session
+    if st.button("▶  Start Session", use_container_width=True, key="start_btn"):
         st.session_state.student_session = StudentSession(
             student_id=student_id,
             subject=selected_subject,
-            class_level=selected_class
+            class_level=selected_class,
         )
-        st.success(f"Welcome {student_id}! 🎉")
+        st.success(f"Welcome, {student_id}!")
 
-    st.markdown("---")
-    
-    # Analytics Section
+    # Live stats (only when session active)
     if st.session_state.student_session:
-        st.markdown("### 📊 Performance Analytics")
-        summary = st.session_state.student_session.get_progress_summary()
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.metric("Accuracy", f"{summary['accuracy']:.1f}%", "↑ Learning")
-        with col2:
-            st.metric("Questions", summary['total_questions'], "✓ Answered")
-        
-        # Topic Confidence Radar
-        if summary['topic_confidence']:
-            topics = list(summary['topic_confidence'].keys())
-            confidences = [summary['topic_confidence'][t] * 100 for t in topics]
-            
-            fig = go.Figure(data=go.Scatterpolar(
-                r=confidences,
-                theta=topics,
-                fill='toself',
-                name='Mastery Level',
-                line_color='#6366f1',
-                fillcolor='rgba(99, 102, 241, 0.2)'
+        sess = st.session_state.student_session
+        summary = sess.get_progress_summary()
+        st.divider()
+        st.caption("PERFORMANCE")
+        c1, c2 = st.columns(2)
+        c1.metric("Accuracy", f"{summary['accuracy']:.0f}%")
+        c2.metric("Answered", summary["total_questions"])
+
+        if summary["topic_confidence"]:
+            topics = list(summary["topic_confidence"].keys())
+            vals   = [summary["topic_confidence"][t] * 100 for t in topics]
+            fig = go.Figure(go.Scatterpolar(
+                r=vals, theta=topics, fill="toself",
+                line_color="#4f46e5",
+                fillcolor="rgba(79,70,229,0.15)",
             ))
-            
             fig.update_layout(
-                polar=dict(
-                    radialaxis=dict(visible=True, range=[0, 100], gridcolor='#e2e8f0'),
-                    bgcolor='rgba(248, 250, 252, 0.5)'
-                ),
-                showlegend=False,
-                height=300,
-                margin=dict(l=50, r=50, t=50, b=50),
-                paper_bgcolor='white',
-                font=dict(size=10, color='#64748b')
+                polar=dict(radialaxis=dict(visible=True, range=[0,100],
+                           tickfont=dict(size=8), gridcolor="#e2e8f0")),
+                showlegend=False, height=220,
+                margin=dict(l=30,r=30,t=30,b=20),
+                paper_bgcolor="rgba(0,0,0,0)",
+                font=dict(color="#94a3b8", size=9),
             )
-            
-            st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-    
-    st.markdown("---")
-    
-    # Reports & Insights
-    st.markdown("### 📈 Reports & Insights")
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.session_state.student_session and st.button("📄 Weekly Report", use_container_width=True):
-            report_path = f"reports/{st.session_state.student_session.student_id}_report.pdf"
-            if report_gen.generate_weekly_report(
-                st.session_state.student_session,
-                report_path
-            ):
-                with open(report_path, 'rb') as f:
-                    st.download_button(
-                        label="⬇️ Download",
-                        data=f.read(),
-                        file_name=os.path.basename(report_path),
-                        mime="application/pdf",
-                        use_container_width=True
-                    )
-    
-    with col2:
-        language = st.selectbox("Language", ["English", "Hindi", "Telugu"], key="lang")
-    
-    st.markdown("---")
-    
-    # Footer
+            st.plotly_chart(fig, use_container_width=True,
+                            config={"displayModeBar": False})
+
+    st.divider()
+    # Report
+    if st.session_state.student_session:
+        if st.button("⬇  Download Report", use_container_width=True):
+            os.makedirs("reports", exist_ok=True)
+            rpath = f"reports/{st.session_state.student_session.student_id}_report.pdf"
+            if report_gen.generate_weekly_report(st.session_state.student_session, rpath):
+                with open(rpath, "rb") as f:
+                    st.download_button("Save PDF", f.read(),
+                                       file_name=os.path.basename(rpath),
+                                       mime="application/pdf",
+                                       use_container_width=True)
+    st.divider()
+    st.caption("EduCore v2.0 · © 2025")
+
+# ─────────────────────────────────────────────
+# Main Content
+# ─────────────────────────────────────────────
+
+if not st.session_state.student_session:
+    # ──────────────── HERO ────────────────
     st.markdown("""
-    <div style='text-align: center; color: #94a3b8; font-size: 11px; margin-top: 20px;'>
-        <p>EduCore v1.0</p>
-        <p>Powered by Google Gemini AI</p>
-        <p>© 2024 EduCore. All rights reserved.</p>
+    <div style="
+        background: linear-gradient(135deg,#4f46e5 0%,#7c3aed 60%,#a21caf 100%);
+        border-radius: 16px;
+        padding: 56px 48px;
+        color: white;
+        margin-bottom: 32px;
+    ">
+        <div style="max-width:600px">
+            <div style="
+                display:inline-block;
+                background:rgba(255,255,255,0.15);
+                border:1px solid rgba(255,255,255,0.25);
+                border-radius:99px;
+                padding:4px 14px;
+                font-size:12px;
+                font-weight:600;
+                margin-bottom:18px;
+                letter-spacing:0.06em;
+            ">✦ POWERED BY GEMINI AI</div>
+            <h1 style="
+                font-size:44px;
+                font-weight:800;
+                margin:0 0 16px 0;
+                line-height:1.15;
+                color:white;
+            ">Learn Smarter.<br>Grow Faster.</h1>
+            <p style="
+                font-size:17px;
+                color:rgba(255,255,255,0.85);
+                margin:0;
+                line-height:1.65;
+            ">An adaptive platform built on the official CBSE curriculum for Classes 6–10.
+            Personalised explanations, instant quizzes, and detailed progress tracking —
+            all in one place.</p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
-# ============================================
-# Main Content Area
-# ============================================
+    # ──────────────── FEATURE CARDS ────────────────
+    cards = [
+        ("🎯", "Truly Adaptive", "Questions and difficulty adjust in real-time based on how you perform."),
+        ("🧠", "AI Explanations", "Every topic explained simply with real-world analogies."),
+        ("📚", "NCERT Aligned", "Content sourced directly from official CBSE textbooks."),
+        ("🌐", "5 Languages", "Study in English, Hindi, Telugu, Kannada, or Malayalam."),
+        ("📊", "Progress Analytics", "Visual dashboards to track mastery across every topic."),
+        ("🎤", "Voice Mode", "Ask questions by voice and hear answers read aloud."),
+    ]
 
-if not st.session_state.student_session:
-    # Welcome Screen - Simple and Clean
-    st.markdown("<h1 style='text-align: center; color: #6366f1; font-size: 48px; margin-bottom: 10px;'>Welcome to EduCore</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #64748b; font-size: 20px; margin-bottom: 30px;'>Next-Generation Adaptive Learning Platform</p>", unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    # Features Section
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown("""
-        <div style='background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 30px; text-align: center;'>
-            <div style='font-size: 48px; margin-bottom: 16px;'>🎯</div>
-            <h3 style='color: #1e293b; font-weight: 700; margin: 12px 0;'>Truly Adaptive</h3>
-            <p style='color: #64748b; font-size: 14px; line-height: 1.6;'>Difficulty adjusts based on your performance</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("""
-        <div style='background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 30px; text-align: center;'>
-            <div style='font-size: 48px; margin-bottom: 16px;'>🧠</div>
-            <h3 style='color: #1e293b; font-weight: 700; margin: 12px 0;'>AI-Powered</h3>
-            <p style='color: #64748b; font-size: 14px; line-height: 1.6;'>Google Gemini AI personalized learning</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col3:
-        st.markdown("""
-        <div style='background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 30px; text-align: center;'>
-            <div style='font-size: 48px; margin-bottom: 16px;'>📚</div>
-            <h3 style='color: #1e293b; font-weight: 700; margin: 12px 0;'>Official NCERT</h3>
-            <p style='color: #64748b; font-size: 14px; line-height: 1.6;'>Official CBSE curriculum aligned</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("")
-
-    col4, col5, col6 = st.columns(3)
-    with col4:
-        st.markdown("""
-        <div style='background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 30px; text-align: center;'>
-            <div style='font-size: 48px; margin-bottom: 16px;'>🌐</div>
-            <h3 style='color: #1e293b; font-weight: 700; margin: 12px 0;'>Multilingual</h3>
-            <p style='color: #64748b; font-size: 14px; line-height: 1.6;'>5 Languages Supported</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col5:
-        st.markdown("""
-        <div style='background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 30px; text-align: center;'>
-            <div style='font-size: 48px; margin-bottom: 16px;'>📊</div>
-            <h3 style='color: #1e293b; font-weight: 700; margin: 12px 0;'>Analytics</h3>
-            <p style='color: #64748b; font-size: 14px; line-height: 1.6;'>Track detailed progress</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col6:
-        st.markdown("""
-        <div style='background: white; border: 2px solid #e2e8f0; border-radius: 16px; padding: 30px; text-align: center;'>
-            <div style='font-size: 48px; margin-bottom: 16px;'>🎤</div>
-            <h3 style='color: #1e293b; font-weight: 700; margin: 12px 0;'>Voice Enabled</h3>
-            <p style='color: #64748b; font-size: 14px; line-height: 1.6;'>Speak & Listen Mode</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    # Stats Section
-    st.markdown("<h2 style='text-align: center; color: #1e293b; margin: 30px 0;'>Why Choose EduCore?</h2>", unsafe_allow_html=True)
-
-    stat1, stat2, stat3, stat4 = st.columns(4)
-    with stat1:
-        st.metric("📚 Textbooks", "15+", "Official")
-    with stat2:
-        st.metric("❓ Questions", "1500+", "Unique")
-    with stat3:
-        st.metric("🌍 Languages", "5", "Supported")
-    with stat4:
-        st.metric("💰 Price", "Free", "Forever")
-
-    st.markdown("---")
-
-    # Steps Section
-    st.markdown("<h2 style='text-align: center; color: #1e293b; margin: 30px 0;'>Get Started in 3 Steps</h2>", unsafe_allow_html=True)
-
-    step1, step2, step3 = st.columns(3)
-    with step1:
-        st.markdown("""
-        <div style='background: #ecfdf5; border-left: 5px solid #10b981; border-radius: 8px; padding: 20px;'>
-            <p style='font-size: 24px; color: #10b981; font-weight: 700; margin: 0 0 10px 0;'>1️⃣</p>
-            <p style='color: #1e293b; font-weight: 700; margin: 0 0 6px 0;'>Enter Details</p>
-            <p style='color: #64748b; font-size: 14px; margin: 0;'>Name, Class & Subject</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with step2:
-        st.markdown("""
-        <div style='background: #eff6ff; border-left: 5px solid #3b82f6; border-radius: 8px; padding: 20px;'>
-            <p style='font-size: 24px; color: #3b82f6; font-weight: 700; margin: 0 0 10px 0;'>2️⃣</p>
-            <p style='color: #1e293b; font-weight: 700; margin: 0 0 6px 0;'>Choose Topic</p>
-            <p style='color: #64748b; font-size: 14px; margin: 0;'>From curriculum</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with step3:
-        st.markdown("""
-        <div style='background: #fef3c7; border-left: 5px solid #f59e0b; border-radius: 8px; padding: 20px;'>
-            <p style='font-size: 24px; color: #f59e0b; font-weight: 700; margin: 0 0 10px 0;'>3️⃣</p>
-            <p style='color: #1e293b; font-weight: 700; margin: 0 0 6px 0;'>Start Learning</p>
-            <p style='color: #64748b; font-size: 14px; margin: 0;'>AI guides journey</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-else:
-    session = st.session_state.student_session
-    
-    # Session Header
-    col1, col2, col3 = st.columns([2, 1, 1])
-    with col1:
-        st.markdown(f"## 📚 {session.subject} — Class {session.class_level}")
-    with col2:
-        st.metric("Current Level", session.get_current_level().upper(), 
-                 delta="Adaptive" if session.get_current_level() != "medium" else "Standard")
-    with col3:
-        st.metric("Session Time", f"{summary['session_duration_minutes']:.0f}m", delta="Active")
-    
-    st.markdown("---")
-    
-    # Topic Selection with improved UX
-    topics = SUBJECTS.get(session.subject, [])
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        selected_topic = st.selectbox("📖 Select Learning Topic", topics, key="topic")
-    with col2:
-        st.write("")
-        st.write("")
-        if st.button("Refresh", use_container_width=True):
-            st.rerun()
-    
-    if selected_topic:
-        session.set_topic(selected_topic)
-    
-    st.markdown("---")
-    
-    # Main Tabs
-    tab1, tab2, tab3, tab4 = st.tabs(["💬 Ask & Learn", "📝 Practice Quiz", "📖 Study", "📊 Progress"])
-    
-    # ========== TAB 1: Ask & Learn ==========
-    with tab1:
-        st.markdown("### Ask Questions About Your Topic")
-        
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            user_question = st.text_input(
-                "Your Question",
-                placeholder=f"e.g., Explain {selected_topic}",
-                label_visibility="collapsed"
-            )
-        with col2:
-            st.write("")
-            ask_btn = st.button("🔍 Ask", use_container_width=True)
-        
-        if ask_btn and user_question:
-            with st.spinner("🧠 Thinking..."):
-                response = explain_engine.answer_question(
-                    question=user_question,
-                    subject=session.subject,
-                    class_level=session.class_level
-                )
-            
-            st.session_state.messages.append({"role": "user", "content": user_question})
-            
-            # Display answer
-            if response.get("answer"):
-                with st.container():
-                    st.success(f"**Answer:** {response['answer']}")
-                    
-                    if response.get("explanation"):
-                        st.info(f"**📖 More:** {response['explanation']}")
-                    
-                    if response.get("analogy"):
-                        st.success(f"**💡 Think of it like:** {response['analogy']}")
-        
-        # Chat History
-        if st.session_state.messages:
-            st.markdown("### 💬 Recent Questions")
-            for msg in st.session_state.messages[-5:]:
-                with st.chat_message(msg["role"]):
-                    st.write(msg["content"])
-    
-    # ========== TAB 2: Practice Quiz ==========
-    with tab2:
-        st.markdown("### Practice & Test Your Knowledge")
-        
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            if st.button("🎯 Generate Quiz (5 Questions)", use_container_width=True):
-                st.session_state.quiz_active = True
-                st.session_state.quiz_index = 0
-                
-                with st.spinner("Generating questions..."):
-                    st.session_state.quiz_questions = quiz_gen.generate_quiz(
-                        topic=selected_topic,
-                        num_questions=5,
-                        class_level=session.class_level,
-                        subject=session.subject
-                    )
-                st.success("✅ Quiz generated!")
-        
-        if st.session_state.quiz_active and st.session_state.quiz_questions:
-            q_idx = st.session_state.quiz_index
-            question = st.session_state.quiz_questions[q_idx]
-            
-            st.markdown(f"### Question {q_idx + 1} of 5")
-            
-            # Question display
+    cols = st.columns(3)
+    for i, (icon, title, desc) in enumerate(cards):
+        with cols[i % 3]:
             st.markdown(f"""
-            <div style='background: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #6366f1;'>
-                <p style='color: #64748b; font-weight: 600; margin: 0;'>{question['difficulty'].upper()} • {question['type'].upper()}</p>
-                <h3 style='margin: 10px 0 0 0;'>{question['question']}</h3>
+            <div style="
+                background:white;
+                border:1px solid #e2e8f0;
+                border-radius:12px;
+                padding:24px 20px;
+                margin-bottom:16px;
+                height:160px;
+            ">
+                <div style="font-size:28px;margin-bottom:10px">{icon}</div>
+                <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:6px">{title}</div>
+                <div style="font-size:13px;color:#64748b;line-height:1.55">{desc}</div>
             </div>
             """, unsafe_allow_html=True)
-            
-            st.markdown("")
-            
-            # Answer input
-            if question['type'] == 'mcq':
-                options = question.get('options', {})
-                if options:
-                    selected_answer = st.radio(
-                        "Choose your answer:",
-                        list(options.keys()),
-                        format_func=lambda x: f"{x}: {options[x]}",
-                        label_visibility="collapsed"
-                    )
-                    
-                    if st.button("✓ Submit Answer", use_container_width=True, key=f"submit_{q_idx}"):
-                        with st.spinner("Evaluating..."):
-                            result = quiz_gen.evaluate_answer(question, selected_answer)
-                        
-                        session.record_question(question['question'], selected_answer, result['is_correct'])
-                        session.update_confidence(selected_topic, result['is_correct'])
-                        
-                        if result['is_correct']:
-                            st.success(f"🎉 Correct! {result.get('feedback', '')}")
-                        else:
-                            st.error(f"Not quite. {result.get('feedback', '')}")
-                        
-                        st.info(f"**Explanation:** {question.get('explanation', '')}")
-                        
-                        st.markdown("")
-                        if q_idx < 4:
-                            if st.button("→ Next Question", use_container_width=True):
-                                st.session_state.quiz_index += 1
-                                st.rerun()
-                        else:
-                            st.balloons()
-                            st.success("🎓 Quiz Complete!")
-                            summary = session.get_progress_summary()
-                            st.metric("Quiz Score", f"{summary['accuracy']:.1f}%")
-            
+
+    # ──────────────── STATS BAR ────────────────
+    st.markdown("""
+    <div style="
+        background:#f8fafc;
+        border:1px solid #e2e8f0;
+        border-radius:12px;
+        padding:28px 32px;
+        display:flex;
+        justify-content:space-around;
+        text-align:center;
+        margin:8px 0 32px 0;
+        flex-wrap:wrap;
+        gap:16px;
+    ">
+        <div>
+            <div style="font-size:30px;font-weight:800;color:#4f46e5">15+</div>
+            <div style="font-size:13px;color:#64748b;margin-top:2px">Official Textbooks</div>
+        </div>
+        <div>
+            <div style="font-size:30px;font-weight:800;color:#7c3aed">1,500+</div>
+            <div style="font-size:13px;color:#64748b;margin-top:2px">Practice Questions</div>
+        </div>
+        <div>
+            <div style="font-size:30px;font-weight:800;color:#a21caf">5</div>
+            <div style="font-size:13px;color:#64748b;margin-top:2px">Languages</div>
+        </div>
+        <div>
+            <div style="font-size:30px;font-weight:800;color:#0ea5e9">Free</div>
+            <div style="font-size:13px;color:#64748b;margin-top:2px">Always</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ──────────────── GET STARTED ────────────────
+    st.markdown("### How to get started")
+    s1, s2, s3 = st.columns(3)
+    for col, num, color, bg, heading, body in [
+        (s1, "01", "#10b981", "#ecfdf5", "Fill your profile", "Enter your name, class and subject in the sidebar."),
+        (s2, "02", "#4f46e5", "#eef2ff", "Pick a topic",      "Select any topic from the CBSE curriculum."),
+        (s3, "03", "#f59e0b", "#fffbeb", "Start learning",    "Ask questions, take quizzes, and track your growth."),
+    ]:
+        with col:
+            st.markdown(f"""
+            <div style="
+                background:{bg};
+                border-radius:12px;
+                padding:24px;
+                border-left:4px solid {color};
+            ">
+                <div style="font-size:11px;font-weight:700;color:{color};letter-spacing:0.08em;margin-bottom:8px">STEP {num}</div>
+                <div style="font-size:16px;font-weight:700;color:#1e293b;margin-bottom:6px">{heading}</div>
+                <div style="font-size:13px;color:#475569;line-height:1.55">{body}</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+else:
+    # ─────────────────────────────────────────────
+    # Active Learning Session
+    # ─────────────────────────────────────────────
+    session = st.session_state.student_session
+    summary = session.get_progress_summary()
+
+    # Session header bar
+    st.markdown(f"""
+    <div style="
+        background:white;
+        border:1px solid #e2e8f0;
+        border-radius:12px;
+        padding:16px 24px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        margin-bottom:20px;
+    ">
+        <div>
+            <span style="font-size:13px;color:#64748b;font-weight:500">Learning Session</span><br>
+            <span style="font-size:20px;font-weight:700;color:#1e293b">
+                {session.subject} · Class {session.class_level}
+            </span>
+        </div>
+        <div style="display:flex;gap:24px;text-align:center">
+            <div>
+                <div style="font-size:20px;font-weight:700;color:#4f46e5">{summary['accuracy']:.0f}%</div>
+                <div style="font-size:11px;color:#94a3b8">Accuracy</div>
+            </div>
+            <div>
+                <div style="font-size:20px;font-weight:700;color:#1e293b">{summary['total_questions']}</div>
+                <div style="font-size:11px;color:#94a3b8">Answered</div>
+            </div>
+            <div>
+                <div style="font-size:20px;font-weight:700;color:#10b981">{session.get_current_level().upper()}</div>
+                <div style="font-size:11px;color:#94a3b8">Level</div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Topic selector
+    topics = SUBJECTS.get(session.subject, [])
+    tc1, tc2 = st.columns([4, 1])
+    with tc1:
+        selected_topic = st.selectbox("Topic", topics, key="topic",
+                                      label_visibility="collapsed")
+    with tc2:
+        if st.button("↺ Refresh", use_container_width=True):
+            st.rerun()
+
+    if selected_topic:
+        session.set_topic(selected_topic)
+
+    st.divider()
+
+    # ── Tabs ──
+    tab1, tab2, tab3, tab4 = st.tabs(["💬  Ask", "📝  Quiz", "📖  Study", "📊  Progress"])
+
+    # ───── TAB 1 · Ask ─────
+    with tab1:
+        st.markdown("#### Ask anything about this topic")
+
+        q_col, btn_col = st.columns([5, 1])
+        with q_col:
+            user_q = st.text_input("question", placeholder=f"e.g. Explain {selected_topic} with an example…",
+                                   label_visibility="collapsed")
+        with btn_col:
+            st.markdown("<div style='margin-top:4px'/>", unsafe_allow_html=True)
+            ask = st.button("Ask →", use_container_width=True)
+
+        if ask and user_q:
+            with st.spinner("Thinking…"):
+                resp = explain_engine.answer_question(
+                    question=user_q, subject=session.subject,
+                    class_level=session.class_level)
+            st.session_state.messages.append({"role": "user", "content": user_q})
+
+            if resp.get("answer"):
+                st.markdown(f"""
+                <div style="background:#eef2ff;border-left:4px solid #4f46e5;
+                            border-radius:0 10px 10px 0;padding:18px 20px;margin-top:16px">
+                    <div style="font-size:12px;font-weight:600;color:#4f46e5;
+                                margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">Answer</div>
+                    <div style="font-size:15px;color:#1e293b;line-height:1.65">{resp['answer']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            if resp.get("explanation"):
+                st.info(resp["explanation"])
+            if resp.get("analogy"):
+                st.success(f"💡 **Analogy:** {resp['analogy']}")
+
+        if st.session_state.messages:
+            st.markdown("---")
+            st.markdown("#### Recent questions")
+            for msg in reversed(st.session_state.messages[-6:]):
+                with st.chat_message(msg["role"]):
+                    st.write(msg["content"])
+
+    # ───── TAB 2 · Quiz ─────
+    with tab2:
+        st.markdown("#### Practice Quiz")
+        st.caption("Questions adapt to your current performance level.")
+
+        qc1, qc2, qc3 = st.columns([2, 2, 3])
+        with qc1:
+            if st.button("Generate 5 Questions", use_container_width=True):
+                st.session_state.quiz_active   = True
+                st.session_state.quiz_index    = 0
+                st.session_state.quiz_submitted = False
+                with st.spinner("Generating…"):
+                    st.session_state.quiz_questions = quiz_gen.generate_quiz(
+                        topic=selected_topic, num_questions=5,
+                        class_level=session.class_level, subject=session.subject)
+                st.rerun()
+
+        if st.session_state.quiz_active and st.session_state.quiz_questions:
+            q_idx = st.session_state.quiz_index
+            q     = st.session_state.quiz_questions[q_idx]
+            total = len(st.session_state.quiz_questions)
+
+            # progress strip
+            st.markdown(f"""
+            <div style="display:flex;align-items:center;gap:12px;margin:16px 0">
+                <div style="flex:1;background:#e2e8f0;border-radius:99px;height:6px">
+                    <div style="width:{int((q_idx/total)*100)}%;background:#4f46e5;
+                                border-radius:99px;height:6px;transition:width 0.4s"></div>
+                </div>
+                <span style="font-size:12px;color:#64748b;white-space:nowrap">
+                    {q_idx+1} / {total}
+                </span>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # question card
+            diff_color = {"easy":"#10b981","medium":"#f59e0b","hard":"#ef4444"}.get(q.get("difficulty","medium"),"#64748b")
+            st.markdown(f"""
+            <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;
+                        padding:24px;margin-bottom:16px">
+                <div style="display:flex;gap:8px;margin-bottom:12px">
+                    <span style="background:{diff_color}20;color:{diff_color};
+                                 font-size:11px;font-weight:700;padding:3px 10px;
+                                 border-radius:99px;text-transform:uppercase">{q.get('difficulty','')}</span>
+                    <span style="background:#f1f5f9;color:#64748b;
+                                 font-size:11px;font-weight:600;padding:3px 10px;
+                                 border-radius:99px;text-transform:uppercase">{q.get('type','')}</span>
+                </div>
+                <div style="font-size:17px;font-weight:600;color:#1e293b;line-height:1.55">
+                    {q['question']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # answer
+            if q.get("type") == "mcq":
+                opts = q.get("options", {})
+                sel  = st.radio("Choose:", list(opts.keys()),
+                                format_func=lambda x: f"{x}.  {opts[x]}",
+                                label_visibility="collapsed")
+
+                if st.button("Submit Answer", use_container_width=True, key=f"sub_{q_idx}"):
+                    with st.spinner("Evaluating…"):
+                        res = quiz_gen.evaluate_answer(q, sel)
+                    session.record_question(q["question"], sel, res["is_correct"])
+                    session.update_confidence(selected_topic, res["is_correct"])
+
+                    if res["is_correct"]:
+                        st.success(f"✅ Correct!  {res.get('feedback','')}")
+                    else:
+                        st.error(f"❌ Not quite.  {res.get('feedback','')}")
+                    st.info(f"**Explanation:** {q.get('explanation','')}")
+
+                    if q_idx < total - 1:
+                        if st.button("Next →", use_container_width=True):
+                            st.session_state.quiz_index += 1
+                            st.rerun()
+                    else:
+                        st.balloons()
+                        st.success("🎓 Quiz complete!")
             else:
-                student_answer = st.text_area("Your answer:", height=100)
-                if st.button("✓ Submit Answer", use_container_width=True):
-                    with st.spinner("Evaluating..."):
-                        result = quiz_gen.evaluate_answer(question, student_answer)
-                    
-                    session.record_question(question['question'], student_answer, result['is_correct'])
-                    session.update_confidence(selected_topic, result['is_correct'])
-                    
-                    if result['is_correct']:
+                ans = st.text_area("Your answer:", height=100)
+                if st.button("Submit Answer", use_container_width=True):
+                    with st.spinner("Evaluating…"):
+                        res = quiz_gen.evaluate_answer(q, ans)
+                    session.record_question(q["question"], ans, res["is_correct"])
+                    session.update_confidence(selected_topic, res["is_correct"])
+                    if res["is_correct"]:
                         st.success("✅ Great answer!")
                     else:
-                        st.warning("Good effort! Here's what we're looking for...")
-                    
-                    st.info(f"**Feedback:** {result.get('feedback', '')}")
-    
-    # ========== TAB 3: Study ==========
+                        st.warning("Good effort!")
+                    st.info(f"**Feedback:** {res.get('feedback','')}")
+
+    # ───── TAB 3 · Study ─────
     with tab3:
-        st.markdown("### Explore & Learn")
-        
-        if st.button("📚 Get Explanation", use_container_width=True):
-            with st.spinner("Loading content..."):
-                explanation = explain_engine.explain_topic(
-                    topic=selected_topic,
-                    class_level=session.class_level,
-                    subject=session.subject
-                )
-            
-            if explanation.get("explanation"):
-                st.markdown(f"## {selected_topic}")
-                st.markdown(explanation["explanation"])
-                
-                if explanation.get("analogy"):
-                    st.success(f"**💡 Real-world analogy:** {explanation['analogy']}")
-                
-                if explanation.get("example"):
-                    st.info(f"**📌 Example:** {explanation['example']}")
-                
-                if explanation.get("key_points"):
-                    st.markdown("**Key Points:**")
-                    for point in explanation["key_points"]:
-                        st.write(f"• {point}")
-    
-    # ========== TAB 4: Progress ==========
+        st.markdown("#### Study Notes")
+        st.caption(f"AI-generated summary for **{selected_topic}** based on NCERT content.")
+
+        if st.button("Generate Study Notes", use_container_width=True):
+            with st.spinner("Loading content…"):
+                expl = explain_engine.explain_topic(
+                    topic=selected_topic, class_level=session.class_level,
+                    subject=session.subject)
+
+            if expl.get("explanation"):
+                st.markdown(f"### {selected_topic}")
+                st.markdown(expl["explanation"])
+
+                if expl.get("analogy"):
+                    st.markdown(f"""
+                    <div style="background:#fefce8;border-left:4px solid #f59e0b;
+                                border-radius:0 8px 8px 0;padding:16px;margin:12px 0">
+                        <b>💡 Real-world analogy</b><br>{expl['analogy']}
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                if expl.get("example"):
+                    st.markdown(f"""
+                    <div style="background:#f0fdf4;border-left:4px solid #10b981;
+                                border-radius:0 8px 8px 0;padding:16px;margin:12px 0">
+                        <b>📌 Example</b><br>{expl['example']}
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                if expl.get("key_points"):
+                    st.markdown("**Key points to remember**")
+                    for pt in expl["key_points"]:
+                        st.markdown(f"- {pt}")
+
+    # ───── TAB 4 · Progress ─────
     with tab4:
-        st.markdown("### Your Learning Analytics")
-        
+        st.markdown("#### Your Progress")
         summary = session.get_progress_summary()
-        
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("Total Questions", summary['total_questions'], "+2 today")
-        with col2:
-            st.metric("Accuracy", f"{summary['accuracy']:.1f}%", "↑ 5%")
-        with col3:
-            st.metric("Topics Mastered", len([v for v in summary['topic_confidence'].values() if v >= 0.7]))
-        with col4:
-            st.metric("Streak", f"{summary['session_duration_minutes']:.0f} min", "Active")
-        
-        st.markdown("---")
-        st.markdown("### Topic Performance")
-        
-        if summary['topic_confidence']:
-            for topic, confidence in summary['topic_confidence'].items():
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.progress(confidence, text=topic)
-                with col2:
-                    if confidence >= 0.7:
-                        st.write("🟢 Strong")
-                    elif confidence >= 0.4:
-                        st.write("🟡 Good")
-                    else:
-                        st.write("🔴 Practice")
-        
-        st.markdown("---")
-        
-        if st.button("💾 Save Progress", use_container_width=True):
-            session_path = f"sessions/{session.student_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-            os.makedirs("sessions", exist_ok=True)
-            session.save_session(session_path)
-            st.success(f"✅ Progress saved!")
 
-# ============================================
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("Questions", summary["total_questions"])
+        m2.metric("Accuracy",  f"{summary['accuracy']:.1f}%")
+        m3.metric("Mastered",  len([v for v in summary["topic_confidence"].values() if v >= 0.7]))
+        m4.metric("Session",   f"{summary['session_duration_minutes']:.0f} min")
+
+        st.divider()
+
+        if summary["topic_confidence"]:
+            st.markdown("##### Topic Mastery")
+            for topic, conf in summary["topic_confidence"].items():
+                lc, rc = st.columns([4, 1])
+                with lc:
+                    st.progress(conf, text=topic)
+                with rc:
+                    badge = ("🟢 Strong" if conf >= 0.7
+                             else "🟡 Building" if conf >= 0.4
+                             else "🔴 Practice")
+                    st.caption(badge)
+
+        st.divider()
+        sc1, sc2 = st.columns(2)
+        with sc1:
+            if st.button("💾 Save Progress", use_container_width=True):
+                os.makedirs("sessions", exist_ok=True)
+                spath = f"sessions/{session.student_id}_{datetime.now():%Y%m%d_%H%M%S}.json"
+                session.save_session(spath)
+                st.success("Progress saved!")
+
+# ─────────────────────────────────────────────
 # Footer
-# ============================================
-
-st.markdown("---")
+# ─────────────────────────────────────────────
 st.markdown("""
-<div style='text-align: center; color: #94a3b8; font-size: 12px; padding: 20px;'>
-    <p><strong>EduCore</strong> — Next-Generation AI Learning Platform</p>
-    <p>Powered by Google Gemini • NCERT Curriculum • Adaptive Learning</p>
-    <p style='margin-top: 10px; font-size: 10px;'>© 2024 EduCore. All rights reserved.</p>
+<div style="text-align:center;padding:32px 0 8px;color:#94a3b8;font-size:12px">
+    <strong style="color:#64748b">EduCore</strong> · Intelligent Learning for CBSE Classes 6–10 ·
+    <span>© 2025</span>
 </div>
 """, unsafe_allow_html=True)
