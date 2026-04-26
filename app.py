@@ -41,11 +41,40 @@ html, body, .stApp {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Remove all Streamlit chrome */
-#MainMenu, footer, header, .stDeployButton,
-[data-testid="stToolbar"], [data-testid="stDecoration"] {
+/* Remove all Streamlit chrome except sidebar toggle */
+#MainMenu, footer, .stDeployButton,
+[data-testid="stDecoration"] {
     display: none !important;
     visibility: hidden !important;
+}
+header { visibility: hidden !important; }
+
+/* ── Sidebar collapse/expand arrow button ── */
+[data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    background: rgba(99,102,241,0.15) !important;
+    border: 1px solid rgba(99,102,241,0.35) !important;
+    border-radius: 50% !important;
+    color: #818cf8 !important;
+    cursor: pointer !important;
+    top: 14px !important;
+    z-index: 9999 !important;
+    box-shadow: 0 0 12px rgba(99,102,241,0.25) !important;
+    transition: background 0.2s, box-shadow 0.2s !important;
+}
+[data-testid="collapsedControl"]:hover {
+    background: rgba(99,102,241,0.30) !important;
+    box-shadow: 0 0 20px rgba(99,102,241,0.45) !important;
+}
+[data-testid="collapsedControl"] svg {
+    fill: #818cf8 !important;
+    color: #818cf8 !important;
+    stroke: #818cf8 !important;
 }
 
 .main .block-container {
@@ -573,9 +602,9 @@ with st.sidebar:
             -webkit-text-fill-color:#e2e8f0;
         ">🎓 EduCore</div>
         <div style="
-            font-size:11px;color:#3d4a5c;font-weight:500;
+            font-size:11px;color:#64748b;font-weight:500;
             margin-top:3px;letter-spacing:0.04em;
-            -webkit-text-fill-color:#3d4a5c;
+            -webkit-text-fill-color:#64748b;
         ">INTELLIGENT LEARNING PLATFORM</div>
     </div>
     """, unsafe_allow_html=True)
@@ -695,6 +724,28 @@ with st.sidebar:
     st.divider()
     st.caption("EduCore v2.0 · © 2025")
 
+
+# ═════════════════════════════════════════════════════════════
+# FLOATING SIDEBAR TOGGLE BUTTON (JS click on Streamlit's arrow)
+# ═════════════════════════════════════════════════════════════
+st.markdown("""
+<button onclick="
+    var btn = window.parent.document.querySelector('[data-testid=collapsedControl]');
+    if(btn){ btn.click(); }
+" style="
+    position:fixed;top:14px;left:14px;z-index:99999;
+    display:flex;align-items:center;gap:8px;
+    background:rgba(99,102,241,0.18);
+    border:1px solid rgba(99,102,241,0.4);
+    border-radius:10px;padding:8px 16px;
+    color:#a5b4fc;font-size:13px;font-weight:600;
+    letter-spacing:0.02em;cursor:pointer;
+    box-shadow:0 4px 16px rgba(99,102,241,0.2);
+    backdrop-filter:blur(8px);
+    transition:background 0.2s;
+    font-family:'Inter',sans-serif;
+">☰&nbsp; Menu</button>
+""", unsafe_allow_html=True)
 
 # ═════════════════════════════════════════════════════════════
 # MAIN  ──  HOME
