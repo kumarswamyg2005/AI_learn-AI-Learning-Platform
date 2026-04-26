@@ -1,6 +1,7 @@
 """EduCore — Intelligent Learning Platform"""
 
 import streamlit as st
+import streamlit.components.v1 as components
 import plotly.graph_objects as go
 from datetime import datetime
 import os
@@ -726,26 +727,49 @@ with st.sidebar:
 
 
 # ═════════════════════════════════════════════════════════════
-# FLOATING SIDEBAR TOGGLE BUTTON (JS click on Streamlit's arrow)
+# SIDEBAR TOGGLE — uses components.html so JS actually runs
 # ═════════════════════════════════════════════════════════════
-st.markdown("""
-<button onclick="
-    var btn = window.parent.document.querySelector('[data-testid=collapsedControl]');
-    if(btn){ btn.click(); }
-" style="
-    position:fixed;top:14px;left:14px;z-index:99999;
-    display:flex;align-items:center;gap:8px;
-    background:rgba(99,102,241,0.18);
-    border:1px solid rgba(99,102,241,0.4);
-    border-radius:10px;padding:8px 16px;
-    color:#a5b4fc;font-size:13px;font-weight:600;
-    letter-spacing:0.02em;cursor:pointer;
-    box-shadow:0 4px 16px rgba(99,102,241,0.2);
-    backdrop-filter:blur(8px);
-    transition:background 0.2s;
-    font-family:'Inter',sans-serif;
-">☰&nbsp; Menu</button>
-""", unsafe_allow_html=True)
+components.html("""
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:transparent; overflow:hidden; }
+  #menuBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(99,102,241,0.18);
+    border: 1px solid rgba(99,102,241,0.45);
+    border-radius: 10px;
+    padding: 8px 18px;
+    color: #a5b4fc;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 18px rgba(99,102,241,0.22);
+    backdrop-filter: blur(8px);
+    transition: background 0.2s, box-shadow 0.2s;
+    margin-top: 4px;
+  }
+  #menuBtn:hover {
+    background: rgba(99,102,241,0.32);
+    box-shadow: 0 4px 24px rgba(99,102,241,0.4);
+  }
+</style>
+<button id="menuBtn">&#9776;&nbsp; Menu</button>
+<script>
+  document.getElementById('menuBtn').addEventListener('click', function() {
+    var doc = window.parent.document;
+    // When sidebar is collapsed the expand button has this testid
+    var btn = doc.querySelector('[data-testid="collapsedControl"]');
+    // When sidebar is open the collapse button is inside the sidebar
+    if (!btn) btn = doc.querySelector('[data-testid="stSidebarCollapseButton"] button');
+    if (!btn) btn = doc.querySelector('[data-testid="stSidebar"] button');
+    if (btn) btn.click();
+  });
+</script>
+""", height=48)
 
 # ═════════════════════════════════════════════════════════════
 # MAIN  ──  HOME
