@@ -682,116 +682,255 @@ with st.sidebar:
 # ============================================
 
 if not st.session_state.student_session:
-    # Welcome Screen - Modern Design
+    # Welcome Screen - Clean & Professional
     st.markdown("""
-    <div style='background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%); border-radius: 24px; padding: 80px 40px; margin: 40px 0;'>
+    <style>
+        .welcome-container {
+            padding: 60px 20px;
+        }
 
-        <!-- Main Heading -->
-        <div style='text-align: center; margin-bottom: 60px;'>
-            <h1 style='font-size: 56px; font-weight: 800; margin: 0 0 20px 0; background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>
-                Welcome to EduCore
-            </h1>
-            <p style='font-size: 22px; color: #64748b; margin: 0 0 10px 0; font-weight: 500;'>
-                Next-Generation Adaptive Learning
-            </p>
-            <p style='font-size: 16px; color: #94a3b8; margin: 0;'>
-                AI-powered personalized education for Classes 6-10
-            </p>
+        .welcome-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .welcome-title h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-title p {
+            color: #64748b;
+            font-size: 18px;
+            margin: 8px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 50px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card:hover {
+            border-color: #6366f1;
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.15);
+            transform: translateY(-8px);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            color: #1e293b;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 12px 0;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 20px;
+            padding: 50px 30px;
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 40px;
+        }
+
+        .stat-item {
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 44px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        .steps-section {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .steps-title {
+            font-size: 22px;
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .step-card {
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:nth-child(1) {
+            background: #ecfdf5;
+            border-left-color: #10b981;
+        }
+
+        .step-card:nth-child(2) {
+            background: #eff6ff;
+            border-left-color: #3b82f6;
+        }
+
+        .step-card:nth-child(3) {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .step-title {
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .step-desc {
+            color: #64748b;
+            font-size: 14px;
+        }
+    </style>
+
+    <div class="welcome-container">
+        <div class="welcome-title">
+            <h1>Welcome to EduCore</h1>
+            <p>Next-Generation Adaptive Learning Platform</p>
+            <p style="color: #94a3b8;">AI-powered personalized education for Classes 6-10</p>
         </div>
 
-        <!-- Feature Cards Grid -->
-        <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 60px;'>
-
-            <!-- Card 1: Adaptive Learning -->
-            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(99, 102, 241, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(99, 102, 241, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(99, 102, 241, 0.1)';">
-                <div style='font-size: 40px; margin-bottom: 16px;'>🎯</div>
-                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Truly Adaptive</h3>
-                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Difficulty adjusts in real-time based on your performance</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Truly Adaptive</h3>
+                <p>Difficulty adjusts in real-time based on your performance</p>
             </div>
 
-            <!-- Card 2: AI-Powered -->
-            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(139, 92, 246, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(139, 92, 246, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(139, 92, 246, 0.1)';">
-                <div style='font-size: 40px; margin-bottom: 16px;'>🧠</div>
-                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>AI-Powered</h3>
-                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Google Gemini AI generates personalized explanations</p>
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>AI-Powered</h3>
+                <p>Google Gemini AI generates personalized explanations</p>
             </div>
 
-            <!-- Card 3: Official Curriculum -->
-            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(236, 72, 153, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(236, 72, 153, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(236, 72, 153, 0.1)';">
-                <div style='font-size: 40px; margin-bottom: 16px;'>📚</div>
-                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Official NCERT</h3>
-                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Aligned with official Indian CBSE curriculum</p>
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>Official NCERT</h3>
+                <p>Aligned with official Indian CBSE curriculum</p>
             </div>
 
-            <!-- Card 4: Multilingual -->
-            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(99, 102, 241, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(99, 102, 241, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(99, 102, 241, 0.1)';">
-                <div style='font-size: 40px; margin-bottom: 16px;'>🌐</div>
-                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Multilingual</h3>
-                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Learn in English, Hindi, Telugu, Kannada & Malayalam</p>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Multilingual</h3>
+                <p>Learn in English, Hindi, Telugu, Kannada & Malayalam</p>
             </div>
 
-            <!-- Card 5: Analytics -->
-            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(139, 92, 246, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(139, 92, 246, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(139, 92, 246, 0.1)';">
-                <div style='font-size: 40px; margin-bottom: 16px;'>📊</div>
-                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Advanced Analytics</h3>
-                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Track progress with detailed performance charts</p>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Advanced Analytics</h3>
+                <p>Track progress with detailed performance charts</p>
             </div>
 
-            <!-- Card 6: Voice & More -->
-            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(236, 72, 153, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(236, 72, 153, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(236, 72, 153, 0.1)';">
-                <div style='font-size: 40px; margin-bottom: 16px;'>🎤</div>
-                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Voice Enabled</h3>
-                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Speak questions, listen to explanations</p>
+            <div class="feature-card">
+                <div class="feature-icon">🎤</div>
+                <h3>Voice Enabled</h3>
+                <p>Speak questions, listen to explanations</p>
             </div>
-
         </div>
 
-        <!-- Stats Section -->
-        <div style='background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); border-radius: 16px; padding: 40px; margin-bottom: 60px;'>
-            <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 40px; text-align: center;'>
-                <div>
-                    <div style='font-size: 42px; font-weight: 800; color: white; margin-bottom: 8px;'>15+</div>
-                    <p style='color: rgba(255,255,255,0.9); font-size: 16px; margin: 0;'>Official Textbooks</p>
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Official Textbooks</div>
                 </div>
-                <div>
-                    <div style='font-size: 42px; font-weight: 800; color: white; margin-bottom: 8px;'>1500+</div>
-                    <p style='color: rgba(255,255,255,0.9); font-size: 16px; margin: 0;'>Unique Questions</p>
+                <div class="stat-item">
+                    <div class="stat-number">1500+</div>
+                    <div class="stat-label">Unique Questions</div>
                 </div>
-                <div>
-                    <div style='font-size: 42px; font-weight: 800; color: white; margin-bottom: 8px;'>5 Languages</div>
-                    <p style='color: rgba(255,255,255,0.9); font-size: 16px; margin: 0;'>Full Support</p>
+                <div class="stat-item">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Languages</div>
                 </div>
-                <div>
-                    <div style='font-size: 42px; font-weight: 800; color: white; margin-bottom: 8px;'>100% Free</div>
-                    <p style='color: rgba(255,255,255,0.9); font-size: 16px; margin: 0;'>Forever</p>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Free Forever</div>
                 </div>
             </div>
         </div>
 
-        <!-- CTA Section -->
-        <div style='text-align: center;'>
-            <p style='font-size: 18px; color: #1e293b; font-weight: 600; margin-bottom: 20px;'>
-                Get Started in 3 Simple Steps
-            </p>
-            <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;'>
-                <div style='padding: 20px; background: #ecfdf5; border-left: 4px solid #10b981; border-radius: 8px;'>
-                    <div style='font-size: 24px; color: #10b981; font-weight: 700; margin-bottom: 8px;'>1️⃣</div>
-                    <p style='color: #1e293b; font-weight: 600; margin: 0 0 6px 0;'>Enter Your Details</p>
-                    <p style='color: #64748b; font-size: 14px; margin: 0;'>Name, Class & Subject</p>
+        <div class="steps-section">
+            <p class="steps-title">Get Started in 3 Simple Steps</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1️⃣</div>
+                    <div class="step-title">Enter Your Details</div>
+                    <div class="step-desc">Name, Class & Subject</div>
                 </div>
-                <div style='padding: 20px; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 8px;'>
-                    <div style='font-size: 24px; color: #3b82f6; font-weight: 700; margin-bottom: 8px;'>2️⃣</div>
-                    <p style='color: #1e293b; font-weight: 600; margin: 0 0 6px 0;'>Choose a Topic</p>
-                    <p style='color: #64748b; font-size: 14px; margin: 0;'>From your curriculum</p>
+                <div class="step-card">
+                    <div class="step-number">2️⃣</div>
+                    <div class="step-title">Choose a Topic</div>
+                    <div class="step-desc">From your curriculum</div>
                 </div>
-                <div style='padding: 20px; background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 8px;'>
-                    <div style='font-size: 24px; color: #f59e0b; font-weight: 700; margin-bottom: 8px;'>3️⃣</div>
-                    <p style='color: #1e293b; font-weight: 600; margin: 0 0 6px 0;'>Start Learning</p>
-                    <p style='color: #64748b; font-size: 14px; margin: 0;'>AI guides your journey</p>
+                <div class="step-card">
+                    <div class="step-number">3️⃣</div>
+                    <div class="step-title">Start Learning</div>
+                    <div class="step-desc">AI guides your journey</div>
                 </div>
             </div>
         </div>
-
     </div>
     """, unsafe_allow_html=True)
 
