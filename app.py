@@ -210,8 +210,8 @@ html, body, .stApp {
     outline: none !important;
 }
 .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-    color: #374151 !important;
-    -webkit-text-fill-color: #374151 !important;
+    color: #64748b !important;
+    -webkit-text-fill-color: #64748b !important;
 }
 .stTextInput label, .stTextArea label {
     color: #64748b !important;
@@ -669,7 +669,7 @@ with st.sidebar:
                 polar=dict(
                     bgcolor="rgba(0,0,0,0)",
                     radialaxis=dict(visible=True, range=[0, 100],
-                                   tickfont=dict(size=7, color="#374151"),
+                                   tickfont=dict(size=7, color="#64748b"),
                                    gridcolor="rgba(255,255,255,0.05)"),
                     angularaxis=dict(tickfont=dict(size=8, color="#4a5568")),
                 ),
@@ -702,108 +702,26 @@ with st.sidebar:
 if not st.session_state.student_session:
 
     # ── HERO ─────────────────────────────────────────────────
-    st.markdown("""
-    <div style="
-        position:relative;
-        background:linear-gradient(135deg,#0d0f1d 0%,#120e2a 40%,#0a1628 100%);
-        border:1px solid rgba(99,102,241,0.2);
-        border-radius:20px;
-        padding:72px 60px 64px;
-        margin-bottom:24px;
-        overflow:hidden;
-    ">
-        <!-- background glow orbs -->
-        <div style="
-            position:absolute;top:-120px;right:-80px;
-            width:500px;height:500px;border-radius:50%;
-            background:radial-gradient(circle,rgba(99,102,241,0.12) 0%,transparent 65%);
-            pointer-events:none;
-        "></div>
-        <div style="
-            position:absolute;bottom:-100px;left:30%;
-            width:400px;height:400px;border-radius:50%;
-            background:radial-gradient(circle,rgba(139,92,246,0.08) 0%,transparent 65%);
-            pointer-events:none;
-        "></div>
-
-        <!-- pill badge -->
-        <div style="
-            display:inline-flex;align-items:center;gap:6px;
-            background:rgba(99,102,241,0.12);
-            border:1px solid rgba(99,102,241,0.3);
-            border-radius:99px;
-            padding:5px 14px 5px 10px;
-            margin-bottom:24px;
-        ">
-            <span style="
-                width:6px;height:6px;border-radius:50%;
-                background:#6366f1;
-                box-shadow:0 0 8px #6366f1;
-                display:inline-block;
-            "></span>
-            <span style="
-                font-size:11px;font-weight:700;color:#a5b4fc;
-                letter-spacing:0.1em;
-                -webkit-text-fill-color:#a5b4fc;
-            ">POWERED BY GOOGLE GEMINI AI</span>
-        </div>
-
-        <!-- headline -->
-        <h1 style="
-            font-family:'Space Grotesk',sans-serif;
-            font-size:52px;font-weight:700;
-            line-height:1.12;letter-spacing:-1.5px;
-            color:#f1f5f9;
-            -webkit-text-fill-color:#f1f5f9;
-            margin:0 0 20px;
-            max-width:640px;
-        ">Learn Smarter.<br>
-        <span style="
-            color:#818cf8;
-            -webkit-text-fill-color:#818cf8;
-        ">Grow Faster.</span></h1>
-
-        <p style="
-            font-size:17px;color:#64748b;
-            max-width:520px;line-height:1.75;
-            margin:0 0 36px;
-            -webkit-text-fill-color:#64748b;
-        ">An adaptive platform built on the official CBSE curriculum for Classes 6–10.
-        Personalised explanations, smart quizzes, and real-time progress analytics.</p>
-
-        <!-- feature pills -->
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <span style="
-                background:rgba(255,255,255,0.05);
-                border:1px solid rgba(255,255,255,0.1);
-                color:#94a3b8;-webkit-text-fill-color:#94a3b8;
-                border-radius:8px;padding:7px 16px;
-                font-size:13px;font-weight:500;
-            ">📚 Classes 6–10</span>
-            <span style="
-                background:rgba(255,255,255,0.05);
-                border:1px solid rgba(255,255,255,0.1);
-                color:#94a3b8;-webkit-text-fill-color:#94a3b8;
-                border-radius:8px;padding:7px 16px;
-                font-size:13px;font-weight:500;
-            ">🌐 5 Languages</span>
-            <span style="
-                background:rgba(255,255,255,0.05);
-                border:1px solid rgba(255,255,255,0.1);
-                color:#94a3b8;-webkit-text-fill-color:#94a3b8;
-                border-radius:8px;padding:7px 16px;
-                font-size:13px;font-weight:500;
-            ">📊 Live Analytics</span>
-            <span style="
-                background:rgba(52,211,153,0.08);
-                border:1px solid rgba(52,211,153,0.2);
-                color:#34d399;-webkit-text-fill-color:#34d399;
-                border-radius:8px;padding:7px 16px;
-                font-size:13px;font-weight:600;
-            ">✦ 100% Free</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        '<div style="position:relative;background:linear-gradient(135deg,#0d0f1d 0%,#120e2a 40%,#0a1628 100%);border:1px solid rgba(99,102,241,0.2);border-radius:20px;padding:72px 60px 64px;margin-bottom:24px;overflow:hidden;">'
+        '<div style="position:absolute;top:-120px;right:-80px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,0.12) 0%,transparent 65%);pointer-events:none;"></div>'
+        '<div style="position:absolute;bottom:-100px;left:30%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,0.08) 0%,transparent 65%);pointer-events:none;"></div>'
+        '<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);border-radius:99px;padding:5px 14px 5px 10px;margin-bottom:24px;">'
+        '<span style="width:6px;height:6px;border-radius:50%;background:#6366f1;box-shadow:0 0 8px #6366f1;display:inline-block;"></span>'
+        '<span style="font-size:11px;font-weight:700;color:#a5b4fc;letter-spacing:0.1em;-webkit-text-fill-color:#a5b4fc;">POWERED BY GOOGLE GEMINI AI</span>'
+        '</div>'
+        '<h1 style="font-family:\'Space Grotesk\',sans-serif;font-size:52px;font-weight:700;line-height:1.12;letter-spacing:-1.5px;color:#f1f5f9;-webkit-text-fill-color:#f1f5f9;margin:0 0 20px;max-width:640px;">Learn Smarter.<br>'
+        '<span style="color:#818cf8;-webkit-text-fill-color:#818cf8;">Grow Faster.</span></h1>'
+        '<p style="font-size:17px;color:#94a3b8;max-width:520px;line-height:1.75;margin:0 0 36px;-webkit-text-fill-color:#94a3b8;">An adaptive platform built on the official CBSE curriculum for Classes 6–10. Personalised explanations, smart quizzes, and real-time progress analytics.</p>'
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
+        '<span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;-webkit-text-fill-color:#94a3b8;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:500;">📚 Classes 6–10</span>'
+        '<span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;-webkit-text-fill-color:#94a3b8;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:500;">🌐 5 Languages</span>'
+        '<span style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;-webkit-text-fill-color:#94a3b8;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:500;">📊 Live Analytics</span>'
+        '<span style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);color:#34d399;-webkit-text-fill-color:#34d399;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:600;">✦ 100% Free</span>'
+        '</div>'
+        '</div>',
+        unsafe_allow_html=True
+    )
 
     # ── FEATURE CARDS ────────────────────────────────────────
     features = [
@@ -855,76 +773,30 @@ if not st.session_state.student_session:
             """, unsafe_allow_html=True)
 
     # ── STATS BAR ────────────────────────────────────────────
-    st.markdown("""
-    <div style="
-        background:rgba(255,255,255,0.02);
-        border:1px solid rgba(255,255,255,0.06);
-        border-radius:14px;
-        padding:32px 48px;
-        margin:4px 0 28px;
-        display:flex;
-        justify-content:space-around;
-        align-items:center;
-        flex-wrap:wrap;
-        gap:20px;
-    ">
-        <div style="text-align:center">
-            <div style="
-                font-family:'Space Grotesk',sans-serif;
-                font-size:38px;font-weight:700;
-                color:#818cf8;-webkit-text-fill-color:#818cf8;
-                letter-spacing:-1px;line-height:1;
-            ">15+</div>
-            <div style="
-                font-size:12px;color:#374151;font-weight:600;
-                margin-top:6px;letter-spacing:0.05em;
-                -webkit-text-fill-color:#374151;
-            ">TEXTBOOKS</div>
-        </div>
-        <div style="width:1px;height:40px;background:rgba(255,255,255,0.06)"></div>
-        <div style="text-align:center">
-            <div style="
-                font-family:'Space Grotesk',sans-serif;
-                font-size:38px;font-weight:700;
-                color:#a78bfa;-webkit-text-fill-color:#a78bfa;
-                letter-spacing:-1px;line-height:1;
-            ">1,500+</div>
-            <div style="
-                font-size:12px;color:#374151;font-weight:600;
-                margin-top:6px;letter-spacing:0.05em;
-                -webkit-text-fill-color:#374151;
-            ">QUESTIONS</div>
-        </div>
-        <div style="width:1px;height:40px;background:rgba(255,255,255,0.06)"></div>
-        <div style="text-align:center">
-            <div style="
-                font-family:'Space Grotesk',sans-serif;
-                font-size:38px;font-weight:700;
-                color:#34d399;-webkit-text-fill-color:#34d399;
-                letter-spacing:-1px;line-height:1;
-            ">5</div>
-            <div style="
-                font-size:12px;color:#374151;font-weight:600;
-                margin-top:6px;letter-spacing:0.05em;
-                -webkit-text-fill-color:#374151;
-            ">LANGUAGES</div>
-        </div>
-        <div style="width:1px;height:40px;background:rgba(255,255,255,0.06)"></div>
-        <div style="text-align:center">
-            <div style="
-                font-family:'Space Grotesk',sans-serif;
-                font-size:38px;font-weight:700;
-                color:#f59e0b;-webkit-text-fill-color:#f59e0b;
-                letter-spacing:-1px;line-height:1;
-            ">Free</div>
-            <div style="
-                font-size:12px;color:#374151;font-weight:600;
-                margin-top:6px;letter-spacing:0.05em;
-                -webkit-text-fill-color:#374151;
-            ">ALWAYS</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:32px 48px;margin:4px 0 28px;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:20px;">'
+        '<div style="text-align:center;">'
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:38px;font-weight:700;color:#818cf8;-webkit-text-fill-color:#818cf8;letter-spacing:-1px;line-height:1;">15+</div>'
+        '<div style="font-size:12px;color:#64748b;font-weight:600;margin-top:6px;letter-spacing:0.05em;-webkit-text-fill-color:#64748b;">TEXTBOOKS</div>'
+        '</div>'
+        '<div style="width:1px;height:40px;background:rgba(255,255,255,0.06);"></div>'
+        '<div style="text-align:center;">'
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:38px;font-weight:700;color:#a78bfa;-webkit-text-fill-color:#a78bfa;letter-spacing:-1px;line-height:1;">1,500+</div>'
+        '<div style="font-size:12px;color:#64748b;font-weight:600;margin-top:6px;letter-spacing:0.05em;-webkit-text-fill-color:#64748b;">QUESTIONS</div>'
+        '</div>'
+        '<div style="width:1px;height:40px;background:rgba(255,255,255,0.06);"></div>'
+        '<div style="text-align:center;">'
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:38px;font-weight:700;color:#34d399;-webkit-text-fill-color:#34d399;letter-spacing:-1px;line-height:1;">5</div>'
+        '<div style="font-size:12px;color:#64748b;font-weight:600;margin-top:6px;letter-spacing:0.05em;-webkit-text-fill-color:#64748b;">LANGUAGES</div>'
+        '</div>'
+        '<div style="width:1px;height:40px;background:rgba(255,255,255,0.06);"></div>'
+        '<div style="text-align:center;">'
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:38px;font-weight:700;color:#f59e0b;-webkit-text-fill-color:#f59e0b;letter-spacing:-1px;line-height:1;">Free</div>'
+        '<div style="font-size:12px;color:#64748b;font-weight:600;margin-top:6px;letter-spacing:0.05em;-webkit-text-fill-color:#64748b;">ALWAYS</div>'
+        '</div>'
+        '</div>',
+        unsafe_allow_html=True
+    )
 
     # ── HOW TO START ─────────────────────────────────────────
     st.markdown("""
@@ -994,9 +866,9 @@ else:
     ">
         <div>
             <div style="
-                font-size:11px;font-weight:700;color:#374151;
+                font-size:11px;font-weight:700;color:#64748b;
                 text-transform:uppercase;letter-spacing:0.1em;
-                margin-bottom:5px;-webkit-text-fill-color:#374151;
+                margin-bottom:5px;-webkit-text-fill-color:#64748b;
             ">Active Session</div>
             <div style="
                 font-family:'Space Grotesk',sans-serif;
@@ -1013,9 +885,9 @@ else:
                     letter-spacing:-0.5px;line-height:1;
                 ">{summary['accuracy']:.0f}%</div>
                 <div style="
-                    font-size:10px;color:#374151;font-weight:600;
+                    font-size:10px;color:#64748b;font-weight:600;
                     margin-top:4px;letter-spacing:0.08em;
-                    -webkit-text-fill-color:#374151;text-transform:uppercase;
+                    -webkit-text-fill-color:#64748b;text-transform:uppercase;
                 ">Accuracy</div>
             </div>
             <div>
@@ -1025,9 +897,9 @@ else:
                     letter-spacing:-0.5px;line-height:1;
                 ">{summary['total_questions']}</div>
                 <div style="
-                    font-size:10px;color:#374151;font-weight:600;
+                    font-size:10px;color:#64748b;font-weight:600;
                     margin-top:4px;letter-spacing:0.08em;
-                    -webkit-text-fill-color:#374151;text-transform:uppercase;
+                    -webkit-text-fill-color:#64748b;text-transform:uppercase;
                 ">Answered</div>
             </div>
             <div>
@@ -1037,9 +909,9 @@ else:
                     letter-spacing:-0.5px;line-height:1;
                 ">{lvl.upper()}</div>
                 <div style="
-                    font-size:10px;color:#374151;font-weight:600;
+                    font-size:10px;color:#64748b;font-weight:600;
                     margin-top:4px;letter-spacing:0.08em;
-                    -webkit-text-fill-color:#374151;text-transform:uppercase;
+                    -webkit-text-fill-color:#64748b;text-transform:uppercase;
                 ">Level</div>
             </div>
             <div>
@@ -1049,9 +921,9 @@ else:
                     letter-spacing:-0.5px;line-height:1;
                 ">{summary['session_duration_minutes']:.0f}m</div>
                 <div style="
-                    font-size:10px;color:#374151;font-weight:600;
+                    font-size:10px;color:#64748b;font-weight:600;
                     margin-top:4px;letter-spacing:0.08em;
-                    -webkit-text-fill-color:#374151;text-transform:uppercase;
+                    -webkit-text-fill-color:#64748b;text-transform:uppercase;
                 ">Session</div>
             </div>
         </div>
@@ -1089,7 +961,7 @@ else:
                 color:#e2e8f0;-webkit-text-fill-color:#e2e8f0;
                 letter-spacing:-0.3px;margin-bottom:4px;
             ">Ask Anything</div>
-            <div style="font-size:13px;color:#374151;-webkit-text-fill-color:#374151">
+            <div style="font-size:13px;color:#64748b;-webkit-text-fill-color:#64748b">
                 Get a clear, simple answer to any question about this topic.
             </div>
         </div>
@@ -1143,8 +1015,8 @@ else:
                     border-radius:12px;padding:18px 22px;margin-bottom:10px;
                 ">
                     <div style="
-                        font-size:10px;font-weight:700;color:#374151;
-                        -webkit-text-fill-color:#374151;
+                        font-size:10px;font-weight:700;color:#64748b;
+                        -webkit-text-fill-color:#64748b;
                         letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;
                     ">📖 More context</div>
                     <div style="
@@ -1178,8 +1050,8 @@ else:
             st.markdown("<div style='height:24px'/>", unsafe_allow_html=True)
             st.markdown("""
             <div style="
-                font-size:13px;font-weight:600;color:#374151;
-                -webkit-text-fill-color:#374151;margin-bottom:10px;
+                font-size:13px;font-weight:600;color:#64748b;
+                -webkit-text-fill-color:#64748b;margin-bottom:10px;
             ">Recent questions</div>
             """, unsafe_allow_html=True)
             for msg in reversed(st.session_state.messages[-5:]):
@@ -1195,7 +1067,7 @@ else:
                 color:#e2e8f0;-webkit-text-fill-color:#e2e8f0;
                 letter-spacing:-0.3px;margin-bottom:4px;
             ">Practice Quiz</div>
-            <div style="font-size:13px;color:#374151;-webkit-text-fill-color:#374151">
+            <div style="font-size:13px;color:#64748b;-webkit-text-fill-color:#64748b">
                 Questions adapt automatically to your current performance level.
             </div>
         </div>
@@ -1235,7 +1107,7 @@ else:
                 </div>
                 <span style="
                     font-size:12px;font-weight:600;
-                    color:#374151;-webkit-text-fill-color:#374151;
+                    color:#64748b;-webkit-text-fill-color:#64748b;
                     white-space:nowrap;
                 ">{q_idx+1} / {total}</span>
             </div>
@@ -1268,7 +1140,7 @@ else:
                     ">{diff}</span>
                     <span style="
                         background:rgba(255,255,255,0.04);
-                        color:#374151;-webkit-text-fill-color:#374151;
+                        color:#64748b;-webkit-text-fill-color:#64748b;
                         font-size:10px;font-weight:600;
                         padding:3px 11px;border-radius:99px;
                         letter-spacing:0.06em;text-transform:uppercase;
@@ -1307,8 +1179,8 @@ else:
                         border-radius:10px;padding:16px 20px;margin-top:12px;
                     ">
                         <div style="
-                            font-size:10px;font-weight:700;color:#374151;
-                            -webkit-text-fill-color:#374151;
+                            font-size:10px;font-weight:700;color:#64748b;
+                            -webkit-text-fill-color:#64748b;
                             text-transform:uppercase;letter-spacing:0.1em;margin-bottom:7px;
                         ">Explanation</div>
                         <div style="
@@ -1351,7 +1223,7 @@ else:
                 color:#e2e8f0;-webkit-text-fill-color:#e2e8f0;
                 letter-spacing:-0.3px;margin-bottom:4px;
             ">Study Notes</div>
-            <div style="font-size:13px;color:#374151;-webkit-text-fill-color:#374151">
+            <div style="font-size:13px;color:#64748b;-webkit-text-fill-color:#64748b">
                 AI-generated notes for
                 <span style="color:#818cf8;-webkit-text-fill-color:#818cf8;font-weight:600">
                     {selected_topic}
@@ -1466,7 +1338,7 @@ else:
                 color:#e2e8f0;-webkit-text-fill-color:#e2e8f0;
                 letter-spacing:-0.3px;margin-bottom:4px;
             ">My Progress</div>
-            <div style="font-size:13px;color:#374151;-webkit-text-fill-color:#374151">
+            <div style="font-size:13px;color:#64748b;-webkit-text-fill-color:#64748b">
                 Performance overview for this session.
             </div>
         </div>
@@ -1530,7 +1402,7 @@ st.markdown("""
         font-size:13px;color:#1f2937;
         -webkit-text-fill-color:#1f2937;
     ">
-        <strong style="color:#374151;-webkit-text-fill-color:#374151">EduCore</strong>
+        <strong style="color:#64748b;-webkit-text-fill-color:#64748b">EduCore</strong>
         &nbsp;·&nbsp; Intelligent Learning for CBSE Classes 6–10 &nbsp;·&nbsp; © 2025
     </span>
 </div>
