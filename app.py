@@ -282,6 +282,147 @@ st.markdown("""
     ::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
     }
+
+    /* Additional Premium Styling */
+
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05)) !important;
+        border-radius: 10px !important;
+        transition: all 0.3s ease;
+    }
+
+    .streamlit-expanderHeader:hover {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)) !important;
+    }
+
+    /* Text area styling */
+    .stTextArea textarea {
+        border-radius: 10px !important;
+        border: 2px solid #e2e8f0 !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    }
+
+    .stTextArea textarea:focus {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15) !important;
+    }
+
+    /* Slider styling */
+    .stSlider > div > div > div > div {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6) !important;
+    }
+
+    /* Chat message styling */
+    .stChatMessage {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+        border-radius: 12px !important;
+        border-left: 4px solid #6366f1 !important;
+    }
+
+    /* Number input */
+    .stNumberInput > div > div > input {
+        border-radius: 10px !important;
+        border: 2px solid #e2e8f0 !important;
+    }
+
+    .stNumberInput > div > div > input:focus {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15) !important;
+    }
+
+    /* Checkbox styling */
+    .stCheckbox > label > div {
+        border-radius: 6px !important;
+    }
+
+    /* Columns spacing */
+    .stColumn {
+        padding: 0 12px;
+    }
+
+    /* Better link styling */
+    a {
+        color: #6366f1 !important;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    a:hover {
+        color: #8b5cf6 !important;
+        text-decoration: underline;
+    }
+
+    /* Code block styling */
+    pre {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+        border: 1px solid #334155 !important;
+        border-radius: 12px !important;
+        padding: 20px !important;
+    }
+
+    code {
+        color: #e2e8f0 !important;
+        font-family: 'Fira Code', 'Courier New', monospace !important;
+    }
+
+    /* Spinner animation */
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .stSpinner {
+        animation: spin 1s linear infinite;
+    }
+
+    /* Smooth page transitions */
+    .main {
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Better select styling */
+    select {
+        background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366f1' d='M6 9L1 4h10z'/%3E%3C/svg%3E") no-repeat right 10px center !important;
+        padding-right: 30px !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+    }
+
+    /* Slider value label */
+    .stMetric {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05)) !important;
+        padding: 20px !important;
+        border-radius: 12px !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+
+    /* Better container styling */
+    .stContainer {
+        border-radius: 16px !important;
+    }
+
+    /* Glowing effect on focus */
+    *:focus {
+        outline: none !important;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -310,21 +451,20 @@ speech_processor = SpeechProcessor()
 # Header Section
 # ============================================
 
-col1, col2 = st.columns([3, 1])
-with col1:
-    st.markdown("""
-    # ✨ EduCore
-    ### Next-Generation Adaptive Learning Platform
-    """)
-with col2:
-    st.markdown("""
-    <div style='text-align: right; margin-top: 20px;'>
-        <p style='color: #64748b; font-size: 12px;'>Powered by Gemini AI</p>
-        <p style='color: #6366f1; font-weight: 600;'>Active Now</p>
+st.markdown("""
+<div style='background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%); border-radius: 16px; padding: 40px; margin-bottom: 30px; box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2);'>
+    <div style='display: flex; justify-content: space-between; align-items: center;'>
+        <div>
+            <h1 style='color: white; font-size: 44px; font-weight: 800; margin: 0 0 8px 0;'>✨ EduCore</h1>
+            <p style='color: rgba(255,255,255,0.95); font-size: 16px; font-weight: 500; margin: 0;'>Next-Generation Adaptive Learning Platform</p>
+        </div>
+        <div style='text-align: right;'>
+            <p style='color: rgba(255,255,255,0.9); font-size: 13px; margin: 0 0 6px 0;'>🚀 Powered by Gemini AI</p>
+            <div style='background: rgba(255,255,255,0.25); color: white; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block;'>● Active Now</div>
+        </div>
     </div>
-    """, unsafe_allow_html=True)
-
-st.markdown("---")
+</div>
+""", unsafe_allow_html=True)
 
 # ============================================
 # Sidebar Configuration
@@ -542,28 +682,116 @@ with st.sidebar:
 # ============================================
 
 if not st.session_state.student_session:
-    # Welcome Screen
+    # Welcome Screen - Modern Design
     st.markdown("""
-    <div style='text-align: center; padding: 60px 20px;'>
-        <h1 style='font-size: 48px; margin-bottom: 10px;'>Welcome to EduCore</h1>
-        <p style='font-size: 18px; color: #64748b; margin-bottom: 30px;'>
-            Transform your learning journey with AI-powered adaptive education
-        </p>
-        
-        <div style='display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 40px;'>
-            <div style='padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);'>
-                <h3 style='color: #6366f1;'>🎯 Personalized</h3>
-                <p style='color: #64748b; font-size: 14px;'>Adapts to your learning style and pace</p>
+    <div style='background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%); border-radius: 24px; padding: 80px 40px; margin: 40px 0;'>
+
+        <!-- Main Heading -->
+        <div style='text-align: center; margin-bottom: 60px;'>
+            <h1 style='font-size: 56px; font-weight: 800; margin: 0 0 20px 0; background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>
+                Welcome to EduCore
+            </h1>
+            <p style='font-size: 22px; color: #64748b; margin: 0 0 10px 0; font-weight: 500;'>
+                Next-Generation Adaptive Learning
+            </p>
+            <p style='font-size: 16px; color: #94a3b8; margin: 0;'>
+                AI-powered personalized education for Classes 6-10
+            </p>
+        </div>
+
+        <!-- Feature Cards Grid -->
+        <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 60px;'>
+
+            <!-- Card 1: Adaptive Learning -->
+            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(99, 102, 241, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(99, 102, 241, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(99, 102, 241, 0.1)';">
+                <div style='font-size: 40px; margin-bottom: 16px;'>🎯</div>
+                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Truly Adaptive</h3>
+                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Difficulty adjusts in real-time based on your performance</p>
             </div>
-            <div style='padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);'>
-                <h3 style='color: #8b5cf6;'>🚀 Intelligent</h3>
-                <p style='color: #64748b; font-size: 14px;'>Real-time feedback and smart recommendations</p>
+
+            <!-- Card 2: AI-Powered -->
+            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(139, 92, 246, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(139, 92, 246, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(139, 92, 246, 0.1)';">
+                <div style='font-size: 40px; margin-bottom: 16px;'>🧠</div>
+                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>AI-Powered</h3>
+                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Google Gemini AI generates personalized explanations</p>
             </div>
-            <div style='padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);'>
-                <h3 style='color: #ec4899;'>📈 Proven</h3>
-                <p style='color: #64748b; font-size: 14px;'>Track progress with detailed analytics</p>
+
+            <!-- Card 3: Official Curriculum -->
+            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(236, 72, 153, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(236, 72, 153, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(236, 72, 153, 0.1)';">
+                <div style='font-size: 40px; margin-bottom: 16px;'>📚</div>
+                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Official NCERT</h3>
+                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Aligned with official Indian CBSE curriculum</p>
+            </div>
+
+            <!-- Card 4: Multilingual -->
+            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(99, 102, 241, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(99, 102, 241, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(99, 102, 241, 0.1)';">
+                <div style='font-size: 40px; margin-bottom: 16px;'>🌐</div>
+                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Multilingual</h3>
+                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Learn in English, Hindi, Telugu, Kannada & Malayalam</p>
+            </div>
+
+            <!-- Card 5: Analytics -->
+            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(139, 92, 246, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(139, 92, 246, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(139, 92, 246, 0.1)';">
+                <div style='font-size: 40px; margin-bottom: 16px;'>📊</div>
+                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Advanced Analytics</h3>
+                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Track progress with detailed performance charts</p>
+            </div>
+
+            <!-- Card 6: Voice & More -->
+            <div style='background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(236, 72, 153, 0.1); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;' onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 16px 40px rgba(236, 72, 153, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(236, 72, 153, 0.1)';">
+                <div style='font-size: 40px; margin-bottom: 16px;'>🎤</div>
+                <h3 style='color: #1e293b; font-size: 20px; font-weight: 700; margin: 0 0 12px 0;'>Voice Enabled</h3>
+                <p style='color: #64748b; font-size: 15px; margin: 0; line-height: 1.6;'>Speak questions, listen to explanations</p>
+            </div>
+
+        </div>
+
+        <!-- Stats Section -->
+        <div style='background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); border-radius: 16px; padding: 40px; margin-bottom: 60px;'>
+            <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 40px; text-align: center;'>
+                <div>
+                    <div style='font-size: 42px; font-weight: 800; color: white; margin-bottom: 8px;'>15+</div>
+                    <p style='color: rgba(255,255,255,0.9); font-size: 16px; margin: 0;'>Official Textbooks</p>
+                </div>
+                <div>
+                    <div style='font-size: 42px; font-weight: 800; color: white; margin-bottom: 8px;'>1500+</div>
+                    <p style='color: rgba(255,255,255,0.9); font-size: 16px; margin: 0;'>Unique Questions</p>
+                </div>
+                <div>
+                    <div style='font-size: 42px; font-weight: 800; color: white; margin-bottom: 8px;'>5 Languages</div>
+                    <p style='color: rgba(255,255,255,0.9); font-size: 16px; margin: 0;'>Full Support</p>
+                </div>
+                <div>
+                    <div style='font-size: 42px; font-weight: 800; color: white; margin-bottom: 8px;'>100% Free</div>
+                    <p style='color: rgba(255,255,255,0.9); font-size: 16px; margin: 0;'>Forever</p>
+                </div>
             </div>
         </div>
+
+        <!-- CTA Section -->
+        <div style='text-align: center;'>
+            <p style='font-size: 18px; color: #1e293b; font-weight: 600; margin-bottom: 20px;'>
+                Get Started in 3 Simple Steps
+            </p>
+            <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;'>
+                <div style='padding: 20px; background: #ecfdf5; border-left: 4px solid #10b981; border-radius: 8px;'>
+                    <div style='font-size: 24px; color: #10b981; font-weight: 700; margin-bottom: 8px;'>1️⃣</div>
+                    <p style='color: #1e293b; font-weight: 600; margin: 0 0 6px 0;'>Enter Your Details</p>
+                    <p style='color: #64748b; font-size: 14px; margin: 0;'>Name, Class & Subject</p>
+                </div>
+                <div style='padding: 20px; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 8px;'>
+                    <div style='font-size: 24px; color: #3b82f6; font-weight: 700; margin-bottom: 8px;'>2️⃣</div>
+                    <p style='color: #1e293b; font-weight: 600; margin: 0 0 6px 0;'>Choose a Topic</p>
+                    <p style='color: #64748b; font-size: 14px; margin: 0;'>From your curriculum</p>
+                </div>
+                <div style='padding: 20px; background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 8px;'>
+                    <div style='font-size: 24px; color: #f59e0b; font-weight: 700; margin-bottom: 8px;'>3️⃣</div>
+                    <p style='color: #1e293b; font-weight: 600; margin: 0 0 6px 0;'>Start Learning</p>
+                    <p style='color: #64748b; font-size: 14px; margin: 0;'>AI guides your journey</p>
+                </div>
+            </div>
+        </div>
+
     </div>
     """, unsafe_allow_html=True)
 
